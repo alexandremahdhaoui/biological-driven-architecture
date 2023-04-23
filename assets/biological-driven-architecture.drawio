@@ -1,0 +1,413 @@
+<mxfile host="app.diagrams.net" modified="2023-04-23T17:25:11.895Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="jaSNMObpkFy8cNMUCkxt" version="21.1.4" type="device">
+  <diagram name="Page-1" id="3RTwwNzxo26qs1VDL8AL">
+    <mxGraphModel dx="1060" dy="1988" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-97" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-98">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="500.5" y="450" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="500.5" y="440" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-58" value="Worker" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="370.5" y="230" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-1" target="H1lLfUX2kMNGkCiDXfFh-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-1" target="H1lLfUX2kMNGkCiDXfFh-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-1" target="H1lLfUX2kMNGkCiDXfFh-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-1" target="H1lLfUX2kMNGkCiDXfFh-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-24" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-1" target="H1lLfUX2kMNGkCiDXfFh-23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-128" value="Orchestrator may&lt;br&gt;Injects these &lt;br&gt;data structures into&amp;nbsp;&lt;br&gt;Receptors" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="H1lLfUX2kMNGkCiDXfFh-24">
+          <mxGeometry x="0.2154" y="-2" relative="1" as="geometry">
+            <mxPoint x="2" y="-14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-1" value="Orchestrator&lt;br&gt;(struct)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="10.5" y="370" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-2" target="H1lLfUX2kMNGkCiDXfFh-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-2" target="H1lLfUX2kMNGkCiDXfFh-58">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350.5" y="260" />
+              <mxPoint x="350.5" y="260" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-2" value="WorkerPool&lt;br&gt;(struct)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="220.5" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-3" value="WorkerPool&lt;br&gt;(struct)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="220.5" y="330" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-4" value="WorkerPool&lt;br&gt;(struct)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="220.5" y="420" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-5" value="WorkerPool&lt;br&gt;(struct)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="220.5" y="510" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-10" value="Worker" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="380.5" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-43" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-42">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="500.5" y="540" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="500.5" y="530" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-141" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.31;entryY=0.8;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-20" target="H1lLfUX2kMNGkCiDXfFh-23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-20" value="Queue" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="10.5" y="620" width="70" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-140" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.55;entryY=0.95;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-21" target="H1lLfUX2kMNGkCiDXfFh-23">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="76.5" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-21" value="Set" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="90.5" y="620" width="70" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.8;entryY=0.8;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-22" target="H1lLfUX2kMNGkCiDXfFh-23">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="165.5" y="610" />
+              <mxPoint x="106.5" y="610" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-22" value="Map" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="184.5" y="620" width="70" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-23" value="Shared &lt;br&gt;Data &lt;br&gt;structures" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="10.5" y="520" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-42" value="Effector" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="560.5" y="500" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-56" value="Worker&lt;br&gt;(struct)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="390.5" y="250" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-2" target="H1lLfUX2kMNGkCiDXfFh-56">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350.5" y="280" />
+              <mxPoint x="350.5" y="280" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-75" value="Worker" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="370.5" y="320" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-76" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-78">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340.5" y="360" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-77" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-75">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340.5" y="360" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="340.5" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-78" value="Worker" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="380.5" y="330" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-79" value="Worker&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;(struct)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="390.5" y="340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-80" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-79">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340.5" y="360" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="340.5" y="370" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-81" value="Worker" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="370.5" y="410" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-82" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-84">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340.5" y="450" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-83" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-81">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340.5" y="450" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="340.5" y="440" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-84" value="Worker" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="380.5" y="420" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-85" value="Worker&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;(struct)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="390.5" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-86" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-85">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340.5" y="450" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="340.5" y="460" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-87" value="Worker" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="370.5" y="500" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-88" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-90">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340.5" y="540" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-89" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-87">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340.5" y="540" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="340.5" y="530" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-95" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-90" target="H1lLfUX2kMNGkCiDXfFh-93">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-90" value="Worker" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="380.5" y="510" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-91" value="Worker&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;(struct)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="390.5" y="520" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-92" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-91">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340.5" y="540" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="340.5" y="550" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-93" value="Effector" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="570.5" y="510" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-94" value="Receptor 3&lt;br&gt;(interface)" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="580.5" y="520" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-96" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-91" target="H1lLfUX2kMNGkCiDXfFh-94">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-98" value="Effector" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="560.5" y="410" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-100" value="Effector" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="570.5" y="420" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-101" value="Receptor 2&lt;br&gt;(interface)" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="580.5" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-102" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-101">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510.5" y="460" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-99" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-100">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510.5" y="450" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-103" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-104">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510.5" y="350" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="510.5" y="350" />
+              <mxPoint x="510.5" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-104" value="Effector" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="560.5" y="320" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-105" value="Effector" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="570.5" y="330" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-106" value="Receptor 1&lt;br&gt;(interface)" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="580.5" y="340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-107" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-106">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510.5" y="370" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-108" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-105">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510.5" y="360" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-109" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-110">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="520.5" y="260" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="510.5" y="260" />
+              <mxPoint x="510.5" y="260" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-110" value="Effector" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="560.5" y="230" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-111" value="Effector" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="570.5" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-112" value="Receptor 0&lt;br&gt;(interface)" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="580.5" y="250" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-113" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-112">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510.5" y="280" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-114" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="H1lLfUX2kMNGkCiDXfFh-111">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510.5" y="270" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-116" value="" style="curved=1;endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-112" target="H1lLfUX2kMNGkCiDXfFh-106">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700.5" y="280" as="sourcePoint" />
+            <mxPoint x="750.5" y="230" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="750.5" y="290" />
+              <mxPoint x="750.5" y="360" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-117" value="Queue" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="H1lLfUX2kMNGkCiDXfFh-116">
+          <mxGeometry x="0.2793" y="-4" relative="1" as="geometry">
+            <mxPoint x="4" y="-25" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-120" value="" style="curved=1;endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-101" target="H1lLfUX2kMNGkCiDXfFh-94">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="710.5" y="460" as="sourcePoint" />
+            <mxPoint x="710.5" y="550" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="780.5" y="475" />
+              <mxPoint x="770.5" y="560" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-121" value="Queue" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="H1lLfUX2kMNGkCiDXfFh-120">
+          <mxGeometry x="0.2793" y="-4" relative="1" as="geometry">
+            <mxPoint x="4" y="-26" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-122" value="" style="curved=1;endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-106" target="H1lLfUX2kMNGkCiDXfFh-101">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700.5" y="370" as="sourcePoint" />
+            <mxPoint x="700.5" y="460" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="760.5" y="390" />
+              <mxPoint x="770.5" y="445" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-123" value="Queue" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="H1lLfUX2kMNGkCiDXfFh-122">
+          <mxGeometry x="0.2793" y="-4" relative="1" as="geometry">
+            <mxPoint x="3" y="-21" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-126" value="" style="curved=1;endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-94" target="H1lLfUX2kMNGkCiDXfFh-112">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700.5" y="550" as="sourcePoint" />
+            <mxPoint x="700.5" y="640" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="800.5" y="620" />
+              <mxPoint x="820.5" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-127" value="Queue" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="H1lLfUX2kMNGkCiDXfFh-126">
+          <mxGeometry x="0.2793" y="-4" relative="1" as="geometry">
+            <mxPoint x="-19" y="95" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-129" value="" style="curved=1;endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="H1lLfUX2kMNGkCiDXfFh-106" target="H1lLfUX2kMNGkCiDXfFh-112">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="700.5" y="370" as="sourcePoint" />
+            <mxPoint x="700.5" y="445" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="800.5" y="380" />
+              <mxPoint x="780.5" y="280" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-130" value="Queue" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="H1lLfUX2kMNGkCiDXfFh-129">
+          <mxGeometry x="0.2793" y="-4" relative="1" as="geometry">
+            <mxPoint x="-18" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-133" value="&lt;h1&gt;Examples&lt;/h1&gt;&lt;p&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Monodirectional communication can easily be done through &lt;b&gt;Queues&lt;/b&gt;.&lt;/li&gt;&lt;li&gt;A key-value store can be achieved using a &lt;b&gt;map&lt;/b&gt;.&lt;/li&gt;&lt;li&gt;Storing unique identifiers can be achieved using a &lt;b&gt;set&lt;/b&gt;.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="500.5" y="690" width="309.5" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-134" value="&lt;h1&gt;Data structures&lt;/h1&gt;&lt;p&gt;Data structures may be shared between multiple Workers or between multiple worker pools.&lt;/p&gt;&lt;p&gt;Let&#39;s define a few data structures:&lt;span style=&quot;background-color: initial;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;b&gt;Array&lt;/b&gt;: will be defined as a linear data structure that collects elements of the same data type and stores them in contiguous and adjacent memory locations.&lt;/li&gt;&lt;ul&gt;&lt;li&gt;Accessing a value from an array by its index is an O(1) operation.&lt;/li&gt;&lt;/ul&gt;&lt;li&gt;&lt;b&gt;Set&lt;/b&gt;: will be defined as a data type that can store unique values.&lt;/li&gt;&lt;li&gt;&lt;b&gt;Map&lt;/b&gt;: or hashmap will be defined as a key-value store.&lt;/li&gt;&lt;ul&gt;&lt;li&gt;Accessing a value from a Hashmap is an O(1) operation.&lt;/li&gt;&lt;/ul&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b&gt;Queue&lt;/b&gt;: will be defined as a double-linked list.&amp;nbsp;&lt;/li&gt;&lt;ul&gt;&lt;li style=&quot;border-color: var(--border-color);&quot;&gt;Pushing or pulling items from the queue is an O(1) operation.&lt;/li&gt;&lt;/ul&gt;&lt;/ul&gt;&lt;p&gt;&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="19" y="690" width="441" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-135" value="&lt;h1 style=&quot;text-align: justify;&quot;&gt;Intercellular communication&lt;/h1&gt;&lt;div style=&quot;border-color: var(--border-color); text-align: justify;&quot;&gt;Communication between cells also involves a ligand and a receptor.&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); text-align: justify;&quot;&gt;&lt;i&gt;Figure0&lt;/i&gt; below shows the usual process.&lt;/div&gt;&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;In biological environments like the human body, cells can communicate with each other using 3 main patterns:&lt;/span&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;ul&gt;&lt;li style=&quot;text-align: justify;&quot;&gt;&lt;b&gt;Paracrine&lt;/b&gt;: a signal is made available to nearby cells&lt;/li&gt;&lt;li style=&quot;text-align: justify;&quot;&gt;&lt;b&gt;Endocrine&lt;/b&gt;: a signal using the circulatory system (e.g. blood system) to reach cells in other parts of the body.&lt;/li&gt;&lt;li style=&quot;text-align: justify;&quot;&gt;&lt;b&gt;Autocrine&lt;/b&gt;: a signal is acting on the signaling cell.&lt;/li&gt;&lt;/ul&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;These 3 mechanisms will come in handy later.&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;p&gt;&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="21.99" y="-540" width="368.01" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-136" value="&lt;h1 style=&quot;text-align: justify;&quot;&gt;About&lt;/h1&gt;&lt;p style=&quot;text-align: justify;&quot;&gt;This project was born from the idea to mimic how human cells behave internally, and how they interact and collaborate with each other to form tissues, organs, and individuals.&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="21" y="-1060" width="789" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-137" value="&lt;h1&gt;Biological-driven Architecture&lt;/h1&gt;&lt;div&gt;Author: Alexandre Mahdhaoui&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;align=center;" vertex="1" parent="1">
+          <mxGeometry x="7" y="-1150" width="820" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-138" value="&lt;h1 style=&quot;text-align: justify;&quot;&gt;Motivation&lt;/h1&gt;&lt;p style=&quot;text-align: justify;&quot;&gt;To design scalable, maintainable and reliable distributed systems, why not learn from the most scalable and well-designed ones?&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: justify;&quot;&gt;By deriving design patterns from biological systems our motivation is to better design distributed information systems, that also better integrate with each other.&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="20.5" y="-960" width="789.5" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-139" value="&lt;h1&gt;Communication&lt;/h1&gt;&lt;p&gt;Communication may happen between multiple workers or worker pools.&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;Let&#39;s define communication and the different expected communication type.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Communication is the process of transferring information from one system to another.&lt;/li&gt;&lt;li&gt;Inter worker pool communication: communication happening between two different receptor kind. E.g.: in &lt;i&gt;Figure 1&lt;/i&gt; communication between Receptor 0 &amp;amp; Receptor 1 through a queue.&lt;/li&gt;&lt;li&gt;Intra worker pool communication: Communication happening between two receptors of the same kind. E.g. communication between 2 replicas of the Receptor 2.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="21" y="970" width="789" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-143" value="&lt;h1 style=&quot;text-align: justify;&quot;&gt;Intracellular communication&lt;/h1&gt;&lt;p style=&quot;text-align: justify;&quot;&gt;In biological environments like the human body, different parts of a cell may communicate with each other.&lt;/p&gt;&lt;p style=&quot;text-align: justify;&quot;&gt;There exist multiple signaling pathways such as the &quot;generic&quot; phosphorylation cascade, which is a series of enzymatic reactions that transfers a phosphate group from ATP to specific target molecules. Leading to a change in their tridimensional shape, which leads to changes in their activity or function.&lt;/p&gt;&lt;p style=&quot;text-align: justify;&quot;&gt;&lt;b&gt;Why is it important to us?&lt;/b&gt;&lt;/p&gt;&lt;p style=&quot;text-align: justify;&quot;&gt;These concepts of reusing intracellular communication mechanisms will help us to better design a distributed system.&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;These concepts will also be useful to understand how different parts of an application may access data and when it makes sense.&lt;/span&gt;&lt;/p&gt;&lt;div style=&quot;border-color: var(--border-color); text-align: justify;&quot;&gt;&lt;b&gt;What should we keep from it?&lt;/b&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); text-align: justify;&quot;&gt;Communication usually involves a protein, as known as a ligand, that binds to a receptor. I&lt;span style=&quot;background-color: initial;&quot;&gt;magine protein and receptors being two shapes that fit together.&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Once a protein binds to its receptor, both tridimensional shape change and triggers a response.&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;border-color: var(--border-color); text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;As an analogy, imagine the ligand a request reaching a REST endpoint.&lt;/span&gt;&lt;/div&gt;&lt;p&gt;&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="19" y="-830" width="791" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-146" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://biologydictionary.net/wp-content/uploads/2018/02/The-External-Reactions-and-the-Internal-Reactions.jpg;" vertex="1" parent="1">
+          <mxGeometry x="403.01" y="-470" width="406.99" height="159.66" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-148" value="&lt;i&gt;Figure0&lt;/i&gt;: ligand-receptor" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="420" y="-340.34000000000003" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-149" value="&lt;i style=&quot;&quot;&gt;Figure1&lt;/i&gt;: Orchestrator" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="324.5" y="600" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-150" value="&lt;h1 style=&quot;text-align: justify;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Architecture&lt;/span&gt;&lt;/h1&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;Simplicity is key to properly measuring the scalability and reliability of a system.&amp;nbsp;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;i style=&quot;background-color: initial;&quot;&gt;&lt;br&gt;&lt;/i&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;i style=&quot;background-color: initial;&quot;&gt;Figure 1&lt;/i&gt;&lt;span style=&quot;background-color: initial;&quot;&gt; shows the biological-driven system architecture basis.&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;An orchestrator struct, spawns worker pools which spawn workers. Workers are an abstraction over the concrete implementation of a Receptor.&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;The goal of this project is to specify the following struct and abstract interfaces.&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;On top of abstract interfaces, we&#39;ll specify shared abstract data structures. Abstract data structures may be shared between Receptors of the same worker pool or between Receptors of different worker pools.&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: justify;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;p&gt;&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="21" y="-280" width="789" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="H1lLfUX2kMNGkCiDXfFh-151" value="&lt;h1 style=&quot;text-align: justify;&quot;&gt;Multiple strategies&lt;/h1&gt;&lt;div&gt;We&#39;ll look at 2 examples of different strategies that can run a distributed system written in BDA.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; Example 1: Multithreading&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;The &lt;b&gt;Orchestrator&lt;/b&gt; runs in your main function.&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;The orchestrator is built from references to one or multiple worker pools.&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;The &lt;b&gt;Worker Pool&lt;/b&gt;&amp;nbsp;is a struct that holds references to a Worker struct factory. The Worker Pool may spawn multiple replicas of the Worker.&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;The&lt;b&gt; Worker&lt;/b&gt;&amp;nbsp;holds a reference to a Receptor. Workers are an abstraction allowing Orchestrators and Worker Pools to swap strategies.&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;The&amp;nbsp;&lt;b&gt;Receptor &lt;/b&gt;is an interface&amp;nbsp;implementing the Run() and Stop() functions.&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;To recap, using this architecture we are injecting a Receptor factory into a WorkerPool which itself is injected into an Orchestrator.&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; What about multiple strategies?&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;The strategy itself is an abstract interface. A concrete implementation of the strategy interface is injected into the orchestrator struct.&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Therefore, our architecture allows switching strategies very flexibly. We may develop our distributed system in our local environment using the multithreading strategy, and decide at any point in time to switch to the Kubernetes one.&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;p&gt;&lt;/p&gt;" style="text;html=1;strokeColor=none;fillColor=none;spacing=5;spacingTop=-20;whiteSpace=wrap;overflow=hidden;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="20.5" y="-60" width="789.5" height="300" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
