@@ -1,37 +1,22 @@
 package biological_driven_architecture
 
+import "github.com/sirupsen/logrus"
+
 type Runtime interface {
+	// Operations
+
 	Init() Error
 	Run() Error
 	Stop() Error
 	HandleError(Error) Error
+
+	// Getters
+
+	GetName() string
+	GetType() string
+	GetLogger() *logrus.Logger
 }
 
 type Builder[T any] interface {
-	Spawn() (T, Error)
-}
-
-type ErrorType string
-type ErrorLevel int
-
-const (
-	Warning ErrorLevel = iota
-	Fatal
-)
-
-type ErrorStruct struct {
-	Type      ErrorType
-	Level     ErrorLevel
-	Message   string
-	SubErrors []Error
-}
-
-type Error *ErrorStruct
-
-func NewError(errorType ErrorType, msg string, subErrors []Error) Error {
-	return &ErrorStruct{
-		Type:      errorType,
-		Message:   msg,
-		SubErrors: subErrors,
-	}
+	Spawn(name string) (T, Error)
 }
