@@ -1,14 +1,22 @@
 package biological_driven_architecture
 
-import "sync"
+import (
+	"github.com/sirupsen/logrus"
+	"sync"
+)
 
 type Orchestrator struct {
+	Name        string
 	WorkerPools []*WorkerPool
 	Strategy    Strategy
+	Logger      *logrus.Logger
 }
 
 func (o *Orchestrator) Init() Error {
-	errors := DefaultQueue[Error]()
+	logEntry := NewLogEntry(o, LogOperationStop)
+	LogTrace(logEntry, LogStatusStart)
+
+	errs := DefaultQueue[Error]()
 	wg := &sync.WaitGroup{}
 
 	for i, _ := range o.WorkerPools {
@@ -17,25 +25,19 @@ func (o *Orchestrator) Init() Error {
 		go func(wg *sync.WaitGroup) {
 			p := o.WorkerPools[i]
 			if err := o.Strategy.Init(p); err != nil {
-				errors.Push(err)
+				errs.Push(err)
 			}
 			wg.Done()
 		}(wg)
 	}
 	wg.Wait()
-
-	if errors.Length() == 0 {
-		return nil
-	}
-
-	subErrors := make([]Error, 0)
-	for err, ok := errors.Pull(); ok; errors.Pull() {
-		subErrors = append(subErrors, err)
-	}
-	return NewError("ErrorList", "Error while initializing Orchestrator", subErrors)
+	return HandleErrorQueue(logEntry, errs)
 }
 func (o *Orchestrator) Run() Error {
-	errors := DefaultQueue[Error]()
+	logEntry := NewLogEntry(o, LogOperationStop)
+	LogTrace(logEntry, LogStatusStart)
+
+	errs := DefaultQueue[Error]()
 	wg := &sync.WaitGroup{}
 
 	for i, _ := range o.WorkerPools {
@@ -45,22 +47,13 @@ func (o *Orchestrator) Run() Error {
 			p := o.WorkerPools[i]
 			err := o.Strategy.Run(p)
 			if err != nil {
-				errors.Push(err)
+				errs.Push(err)
 			}
 			wg.Done()
 		}(wg)
 	}
 	wg.Wait()
-
-	if errors.Length() == 0 {
-		return nil
-	}
-
-	subErrors := make([]Error, 0)
-	for err, ok := errors.Pull(); ok; errors.Pull() {
-		subErrors = append(subErrors, err)
-	}
-	return NewError("ErrorList", "Error while running Orchestrator", subErrors)
+	return HandleErrorQueue(logEntry, errs)
 }
 
 func (o *Orchestrator) HandleError(e Error) Error {
@@ -68,7 +61,9 @@ func (o *Orchestrator) HandleError(e Error) Error {
 }
 
 func (o *Orchestrator) Stop() Error {
-	errors := DefaultQueue[Error]()
+	logEntry := NewLogEntry(o, LogOperationStop)
+	LogTrace(logEntry, LogStatusStart)
+	errs := DefaultQueue[Error]()
 	wg := &sync.WaitGroup{}
 	for _, p := range o.WorkerPools {
 		wg.Add(1)
@@ -76,21 +71,23 @@ func (o *Orchestrator) Stop() Error {
 		go func(wg *sync.WaitGroup) {
 			err := o.Strategy.Stop(p)
 			if err != nil {
-				errors.Push(err)
+				errs.Push(err)
 			}
 			wg.Done()
 		}(wg)
 	}
 	wg.Wait()
+	return HandleErrorQueue(logEntry, errs)
+}
 
-	if errors.Length() == 0 {
-		return nil
-	}
+func (o *Orchestrator) GetName() string {
+	return o.Name
+}
 
-	subErrors := make([]Error, 0)
-	for err, ok := errors.Pull(); ok; errors.Pull() {
-		subErrors = append(subErrors, err)
-	}
+func (o *Orchestrator) GetType() string {
+	return "orchestrator"
+}
 
-	return NewError("ErrorList", "Error while terminating Orchestrator", subErrors)
+func (o *Orchestrator) GetLogger() *logrus.Logger {
+	return o.Logger
 }
