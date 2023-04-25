@@ -27,7 +27,7 @@ const (
 
 func DefaultLogger() *zap.Logger {
 	logger, err := zap.Config{
-		Level:       zap.NewAtomicLevelAt(zap.InfoLevel),
+		Level:       getLoggerLevel(),
 		Development: isLoggerDevelopment(),
 		Sampling: &zap.SamplingConfig{
 			Initial:    100,
@@ -42,6 +42,13 @@ func DefaultLogger() *zap.Logger {
 		panic(err)
 	}
 	return logger
+}
+
+func getLoggerLevel() zap.AtomicLevel {
+	if runtime.GOOS != "darwin" {
+		return zap.NewAtomicLevelAt(zap.DebugLevel)
+	}
+	return zap.NewAtomicLevelAt(zap.InfoLevel)
 }
 
 func getLoggerEncoding() string {
