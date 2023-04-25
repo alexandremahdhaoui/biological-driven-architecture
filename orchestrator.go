@@ -13,7 +13,7 @@ type Orchestrator struct {
 }
 
 func (o *Orchestrator) Init() Error {
-	logEntry := NewLogEntry(o, LogOperationStop)
+	logEntry := NewLogEntry(o, LogOperationInit)
 	LogTrace(logEntry, LogStatusStart)
 
 	errs := DefaultQueue[Error]()
@@ -34,7 +34,7 @@ func (o *Orchestrator) Init() Error {
 	return HandleErrorQueue(logEntry, errs)
 }
 func (o *Orchestrator) Run() Error {
-	logEntry := NewLogEntry(o, LogOperationStop)
+	logEntry := NewLogEntry(o, LogOperationRun)
 	LogTrace(logEntry, LogStatusStart)
 
 	errs := DefaultQueue[Error]()

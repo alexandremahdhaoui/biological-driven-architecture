@@ -22,6 +22,8 @@ func (p *WorkerPool) Init() Error {
 	LogTrace(logEntry, LogStatusStart)
 	errs := DefaultQueue[Error]()
 
+	p.Workers = make([]*Worker, p.Replicas)
+
 	wg := &sync.WaitGroup{}
 	wg.Add(p.Replicas)
 
