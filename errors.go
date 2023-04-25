@@ -43,7 +43,7 @@ func NewError(errorType ErrorType, msg string, subErrors []Error) Error {
 	}
 }
 
-func HandleErrorQueue(logEntry *logrus.Entry, errs Queue[Error]) Error {
+func HandleErrorQueue(logEntry func() *logrus.Entry, errs Queue[Error]) Error {
 	if errs.Length() == 0 {
 		LogTrace(logEntry, LogStatusSuccess)
 		return nil
