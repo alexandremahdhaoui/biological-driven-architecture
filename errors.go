@@ -41,15 +41,15 @@ func NewError(errorType ErrorType, msg string, subErrors []Error) Error {
 	}
 }
 
-func HandleErrorQueue(logger *Logger, errs Queue[Error]) Error {
+func HandleErrorQueue(runtime Runtime, logOperation LogOperation, errs Queue[Error]) Error {
 	if errs.Length() == 0 {
-		LogDebug(logger, LogStatusSuccess)
+		LogDebug(runtime, logOperation, LogStatusSuccess)
 		return nil
 	}
 
 	subErrors := make([]Error, 0)
 	for err, ok := errs.Pull(); ok; errs.Pull() {
-		LogDebugf(logger, LogStatusFailed, "%+v", *err)
+		LogDebugf(runtime, logOperation, LogStatusFailed, "%+v", *err)
 		subErrors = append(subErrors, err)
 	}
 

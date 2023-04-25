@@ -10,25 +10,23 @@ type Worker struct {
 }
 
 func (w *Worker) Init() Error {
-	logger := RuntimeLogger(w, LogOperationInit)
-	LogDebug(logger, LogStatusStart)
+	LogDebug(w, LogOperationInit, LogStatusStart)
 
 	if err := w.Strategy.Init(w.Receptor); err != nil {
-		LogDebugf(logger, LogStatusFailed, "%+v", err)
+		LogDebugf(w, LogOperationInit, LogStatusFailed, "%+v", err)
 		return err
 	}
-	LogDebug(logger, LogStatusSuccess)
+	LogDebug(w, LogOperationInit, LogStatusSuccess)
 	return nil
 }
 func (w *Worker) Run() Error {
-	logger := RuntimeLogger(w, LogOperationRun)
-	LogDebug(logger, LogStatusStart)
+	LogDebug(w, LogOperationRun, LogStatusStart)
 
 	if err := w.Strategy.Run(w.Receptor); err != nil {
-		LogDebugf(logger, LogStatusFailed, "%+v", err)
+		LogDebugf(w, LogOperationRun, LogStatusFailed, "%+v", err)
 		return err
 	}
-	LogDebug(logger, LogStatusSuccess)
+	LogDebug(w, LogOperationRun, LogStatusSuccess)
 	return nil
 }
 
@@ -37,14 +35,13 @@ func (w *Worker) HandleError(err Error) Error {
 }
 
 func (w *Worker) Stop() Error {
-	logger := RuntimeLogger(w, LogOperationStop)
-	LogDebug(logger, LogStatusStart)
+	LogDebug(w, LogOperationStop, LogStatusStart)
 
 	if err := w.Strategy.Stop(w.Receptor); err != nil {
-		LogDebugf(logger, LogStatusFailed, "%+v", err)
+		LogDebugf(w, LogOperationStop, LogStatusFailed, "%+v", err)
 		return err
 	}
-	LogDebug(logger, LogStatusSuccess)
+	LogDebug(w, LogOperationStop, LogStatusSuccess)
 	return nil
 }
 
