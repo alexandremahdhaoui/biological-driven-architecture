@@ -1,6 +1,8 @@
 package biological_driven_architecture
 
-import "github.com/sirupsen/logrus"
+import (
+	"go.uber.org/zap"
+)
 
 type ErrorType string
 type ErrorSeverity int
@@ -43,15 +45,15 @@ func NewError(errorType ErrorType, msg string, subErrors []Error) Error {
 	}
 }
 
-func HandleErrorQueue(logEntry func() *logrus.Entry, errs Queue[Error]) Error {
+func HandleErrorQueue(logger *zap.Logger, errs Queue[Error]) Error {
 	if errs.Length() == 0 {
-		LogTrace(logEntry, LogStatusSuccess)
+		LogDebug(logger, LogStatusSuccess)
 		return nil
 	}
 
 	subErrors := make([]Error, 0)
 	for err, ok := errs.Pull(); ok; errs.Pull() {
-		LogTracef(logEntry, LogStatusFailed, "%+v", *err)
+		LogDebugf(logger, LogStatusFailed, "%+v", *err)
 		subErrors = append(subErrors, err)
 	}
 

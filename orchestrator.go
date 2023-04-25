@@ -1,7 +1,7 @@
 package biological_driven_architecture
 
 import (
-	"github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 	"sync"
 )
 
@@ -9,12 +9,12 @@ type Orchestrator struct {
 	Name        string
 	WorkerPools []*WorkerPool
 	Strategy    Strategy
-	LoggerFunc  func() *logrus.Logger
+	Logger      *zap.Logger
 }
 
 func (o *Orchestrator) Init() Error {
-	logEntry := NewLogEntry(o, LogOperationInit)
-	LogTrace(logEntry, LogStatusStart)
+	logger := RuntimeLogger(o, LogOperationInit)
+	LogDebug(logger, LogStatusStart)
 
 	errs := DefaultQueue[Error]()
 	wg := &sync.WaitGroup{}
@@ -31,11 +31,11 @@ func (o *Orchestrator) Init() Error {
 		}(wg)
 	}
 	wg.Wait()
-	return HandleErrorQueue(logEntry, errs)
+	return HandleErrorQueue(logger, errs)
 }
 func (o *Orchestrator) Run() Error {
-	logEntry := NewLogEntry(o, LogOperationRun)
-	LogTrace(logEntry, LogStatusStart)
+	logger := RuntimeLogger(o, LogOperationRun)
+	LogDebug(logger, LogStatusStart)
 
 	errs := DefaultQueue[Error]()
 	wg := &sync.WaitGroup{}
@@ -53,7 +53,7 @@ func (o *Orchestrator) Run() Error {
 		}(wg)
 	}
 	wg.Wait()
-	return HandleErrorQueue(logEntry, errs)
+	return HandleErrorQueue(logger, errs)
 }
 
 func (o *Orchestrator) HandleError(e Error) Error {
@@ -61,8 +61,8 @@ func (o *Orchestrator) HandleError(e Error) Error {
 }
 
 func (o *Orchestrator) Stop() Error {
-	logEntry := NewLogEntry(o, LogOperationStop)
-	LogTrace(logEntry, LogStatusStart)
+	logger := RuntimeLogger(o, LogOperationStop)
+	LogDebug(logger, LogStatusStart)
 	errs := DefaultQueue[Error]()
 	wg := &sync.WaitGroup{}
 	for _, p := range o.WorkerPools {
@@ -77,7 +77,7 @@ func (o *Orchestrator) Stop() Error {
 		}(wg)
 	}
 	wg.Wait()
-	return HandleErrorQueue(logEntry, errs)
+	return HandleErrorQueue(logger, errs)
 }
 
 func (o *Orchestrator) GetName() string {
@@ -88,6 +88,6 @@ func (o *Orchestrator) GetType() string {
 	return "orchestrator"
 }
 
-func (o *Orchestrator) GetLoggerFunc() func() *logrus.Logger {
-	return o.LoggerFunc
+func (o *Orchestrator) GetLogger() *zap.Logger {
+	return o.Logger
 }

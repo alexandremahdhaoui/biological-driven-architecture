@@ -1,38 +1,38 @@
 package biological_driven_architecture
 
 import (
-	"github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 // Worker is a wrapper struct around a concrete implementation of a Runtime.
 // A Worker holds a reference to a Strategy. The Strategy is injected in the worker by the WorkerFactory
 type Worker struct {
-	Name       string
-	Strategy   Strategy
-	Receptor   Runtime
-	LoggerFunc func() *logrus.Logger
+	Name     string
+	Strategy Strategy
+	Receptor Runtime
+	Logger   *zap.Logger
 }
 
 func (w *Worker) Init() Error {
-	logEntry := NewLogEntry(w, LogOperationInit)
-	LogTrace(logEntry, LogStatusStart)
+	logger := RuntimeLogger(w, LogOperationInit)
+	LogDebug(logger, LogStatusStart)
 
 	if err := w.Strategy.Init(w.Receptor); err != nil {
-		LogTracef(logEntry, LogStatusFailed, "%+v", err)
+		LogDebugf(logger, LogStatusFailed, "%+v", err)
 		return err
 	}
-	LogTrace(logEntry, LogStatusSuccess)
+	LogDebug(logger, LogStatusSuccess)
 	return nil
 }
 func (w *Worker) Run() Error {
-	logEntry := NewLogEntry(w, LogOperationRun)
-	LogTrace(logEntry, LogStatusStart)
+	logger := RuntimeLogger(w, LogOperationRun)
+	LogDebug(logger, LogStatusStart)
 
 	if err := w.Strategy.Run(w.Receptor); err != nil {
-		LogTracef(logEntry, LogStatusFailed, "%+v", err)
+		LogDebugf(logger, LogStatusFailed, "%+v", err)
 		return err
 	}
-	LogTrace(logEntry, LogStatusSuccess)
+	LogDebug(logger, LogStatusSuccess)
 	return nil
 }
 
@@ -41,14 +41,14 @@ func (w *Worker) HandleError(err Error) Error {
 }
 
 func (w *Worker) Stop() Error {
-	logEntry := NewLogEntry(w, LogOperationStop)
-	LogTrace(logEntry, LogStatusStart)
+	logger := RuntimeLogger(w, LogOperationStop)
+	LogDebug(logger, LogStatusStart)
 
 	if err := w.Strategy.Stop(w.Receptor); err != nil {
-		LogTracef(logEntry, LogStatusFailed, "%+v", err)
+		LogDebugf(logger, LogStatusFailed, "%+v", err)
 		return err
 	}
-	LogTrace(logEntry, LogStatusSuccess)
+	LogDebug(logger, LogStatusSuccess)
 	return nil
 }
 
@@ -60,6 +60,6 @@ func (w *Worker) GetType() string {
 	return "worker"
 }
 
-func (w *Worker) GetLoggerFunc() func() *logrus.Logger {
-	return w.LoggerFunc
+func (w *Worker) GetLogger() *zap.Logger {
+	return w.Logger
 }

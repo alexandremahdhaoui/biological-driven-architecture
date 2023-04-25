@@ -1,8 +1,7 @@
 package biological_driven_architecture
 
 import (
-	"github.com/sirupsen/logrus"
-	"os"
+	"go.uber.org/zap"
 	"runtime"
 )
 
@@ -26,76 +25,90 @@ const (
 	LogStatusFailed   LogStatus = "failed"
 )
 
-func DefaultLogger() *logrus.Logger {
-	l := logrus.New()
-	l.SetOutput(os.Stdout)
+func DefaultLogger() *zap.Logger {
+	logger, err := zap.Config{
+		Level:       zap.NewAtomicLevelAt(zap.InfoLevel),
+		Development: isLoggerDevelopment(),
+		Sampling: &zap.SamplingConfig{
+			Initial:    100,
+			Thereafter: 100,
+		},
+		Encoding:         getLoggerEncoding(),
+		EncoderConfig:    zap.NewProductionEncoderConfig(),
+		OutputPaths:      []string{"stdout"},
+		ErrorOutputPaths: []string{"stdout"},
+	}.Build()
+	if err != nil {
+		panic(err)
+	}
+	return logger
+}
+
+func getLoggerEncoding() string {
 	if runtime.GOOS != "darwin" {
-		l.SetFormatter(&logrus.JSONFormatter{})
+		return "console"
 	}
-	return l
+	return "json"
 }
 
-func NewLogEntry(runtime Runtime, operation LogOperation) func() *logrus.Entry {
-	return func() *logrus.Entry {
-		return runtime.GetLoggerFunc()().
-			WithField(logFieldName, runtime.GetName()).
-			WithField(logFieldType, runtime.GetType()).
-			WithField(logFieldOperation, operation)
+func isLoggerDevelopment() bool {
+	if runtime.GOOS != "darwin" {
+		return true
 	}
+	return false
 }
 
-func LogTrace(entry func() *logrus.Entry, status LogStatus) {
-	entry().WithField(logFieldStatus, status).Trace()
+func RuntimeLogger(runtime Runtime, operation LogOperation) *zap.Logger {
+	return runtime.GetLogger().
+		With(zap.String(logFieldName, runtime.GetName())).
+		With(zap.String(logFieldType, runtime.GetType())).
+		With(zap.String(logFieldOperation, string(operation)))
 }
 
-func LogTracef(entry func() *logrus.Entry, status LogStatus, format string, args ...any) {
-	entry().WithField(logFieldStatus, status).Tracef(format, args)
+func LogDebug(logger *zap.Logger, status LogStatus) {
+	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Debug()
 }
 
-func LogDebug(entry func() *logrus.Entry, status LogStatus) {
-	entry().WithField(logFieldStatus, status).Debug()
+func LogDebugf(logger *zap.Logger, status LogStatus, format string, args ...interface{}) {
+	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Debugf(format, args)
 }
 
-func LogDebugf(entry func() *logrus.Entry, status LogStatus, format string, args ...any) {
-	entry().WithField(logFieldStatus, status).Debugf(format, args)
+func LogInfo(logger *zap.Logger, status LogStatus) {
+	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Info()
 }
 
-func LogInfo(entry func() *logrus.Entry, status LogStatus) {
-	entry().WithField(logFieldStatus, status).Info()
+func LogInfof(logger *zap.Logger, status LogStatus, format string, args ...interface{}) {
+	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Infof(format, args)
 }
 
-func LogInfof(entry func() *logrus.Entry, status LogStatus, format string, args ...any) {
-	entry().WithField(logFieldStatus, status).Infof(format, args)
+func LogWarn(logger *zap.Logger, status LogStatus) {
+	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Warn()
 }
 
-func LogWarn(entry func() *logrus.Entry, status LogStatus) {
-	entry().WithField(logFieldStatus, status).Warn()
+func LogWarnf(logger *zap.Logger, status LogStatus, format string, args ...interface{}) {
+	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Warnf(format, args)
 }
 
-func LogWarnf(entry func() *logrus.Entry, status LogStatus, format string, args ...any) {
-	entry().WithField(logFieldStatus, status).Warnf(format, args)
+func LogError(logger *zap.Logger, status LogStatus) {
+	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Error()
 }
 
-func LogError(entry func() *logrus.Entry, status LogStatus) {
-	entry().WithField(logFieldStatus, status).Error()
+func LogErrorf(logger *zap.Logger, status LogStatus, format string, args ...interface{}) {
+	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Errorf(format, args)
 }
 
-func LogErrorf(entry func() *logrus.Entry, status LogStatus, format string, args ...any) {
-	entry().WithField(logFieldStatus, status).Errorf(format, args)
+func LogFatal(logger *zap.Logger, status LogStatus) {
+	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Fatal()
 }
 
-func LogFatal(entry func() *logrus.Entry, status LogStatus) {
-	entry().WithField(logFieldStatus, status).Fatal()
+func LogFatalf(logger *zap.Logger, status LogStatus, format string, args ...interface{}) {
+	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Fatalf(format, args)
 }
 
-func LogFatalf(entry func() *logrus.Entry, status LogStatus, format string, args ...any) {
-	entry().WithField(logFieldStatus, status).Fatalf(format, args)
+func LogPanic(logger *zap.Logger, status LogStatus) {
+	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Panic()
 }
 
-func LogPanic(entry func() *logrus.Entry, status LogStatus) {
-	entry().WithField(logFieldStatus, status).Panic()
-}
-
-func LogPanicf(entry func() *logrus.Entry, status LogStatus, format string, args ...any) {
-	entry().WithField(logFieldStatus, status).Panicf(format, args)
+func LogPanicf(logger *zap.Logger, status LogStatus, format string, args ...interface{}) {
+	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Panicf(format, args)
 }

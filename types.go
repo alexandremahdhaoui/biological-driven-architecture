@@ -1,6 +1,8 @@
 package biological_driven_architecture
 
-import "github.com/sirupsen/logrus"
+import (
+	"go.uber.org/zap"
+)
 
 type Runtime interface {
 	// Operations
@@ -14,7 +16,7 @@ type Runtime interface {
 
 	GetName() string
 	GetType() string
-	GetLoggerFunc() func() *logrus.Logger
+	GetLogger() *zap.Logger
 }
 
 type Builder[T any] interface {
