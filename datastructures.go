@@ -41,10 +41,14 @@ func DefaultMap[T comparable, I any]() Map[T, I] {
 }
 
 type Set[T comparable] interface {
-	// Exist method checks if an element exists in the inMemorySet
-	Exist(element T) bool
-	// Set method adds an element to the inMemorySet
-	Set(element T)
+	// Exist method checks if a key exists in the Set
+	Exist(key T) bool
+	// Set method adds a key to the inMemorySet
+	Set(key T)
+	// TrySet method tries to set a key to the Set.
+	// Returns true, if the key was not already set & sets it.
+	// Else return false.
+	TrySet(key T) bool
 }
 
 // The inMemorySet struct is a generic type that holds a map and a mutex for concurrent access
@@ -53,19 +57,33 @@ type inMemorySet[T comparable] struct {
 	mutex *sync.Mutex
 }
 
-// Exist method checks if an element exists in the inMemorySet
-func (set *inMemorySet[T]) Exist(element T) bool {
+// Exist method checks if a key exists in the inMemorySet
+func (set *inMemorySet[T]) Exist(key T) bool {
 	set.mutex.Lock()
-	_, ok := set.store[element]
+	_, ok := set.store[key]
 	set.mutex.Unlock()
 	return ok
 }
 
-// Set method adds an element to the inMemorySet
-func (set *inMemorySet[T]) Set(element T) {
+// Set method adds a key to the inMemorySet
+func (set *inMemorySet[T]) Set(key T) {
 	set.mutex.Lock()
-	set.store[element] = nil
+	set.store[key] = nil
 	set.mutex.Unlock()
+}
+
+// TrySet method tries to set a key to the Set.
+// Returns true, if the key was not already set & sets it.
+// Else return false.
+func (set *inMemorySet[T]) TrySet(key T) bool {
+	set.mutex.Lock()
+	if _, ok := set.store[key]; ok {
+		set.mutex.Unlock()
+		return false
+	}
+	set.store[key] = nil
+	set.mutex.Unlock()
+	return true
 }
 
 // DefaultSet function returns a new inMemorySet with an initialized map and a mutex
