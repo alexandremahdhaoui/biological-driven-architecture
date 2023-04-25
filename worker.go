@@ -7,10 +7,10 @@ import (
 // Worker is a wrapper struct around a concrete implementation of a Runtime.
 // A Worker holds a reference to a Strategy. The Strategy is injected in the worker by the WorkerFactory
 type Worker struct {
-	Name     string
-	Strategy Strategy
-	Receptor Runtime
-	Logger   *logrus.Logger
+	Name       string
+	Strategy   Strategy
+	Receptor   Runtime
+	LoggerFunc func() *logrus.Logger
 }
 
 func (w *Worker) Init() Error {
@@ -60,6 +60,6 @@ func (w *Worker) GetType() string {
 	return "worker"
 }
 
-func (w *Worker) GetLogger() *logrus.Logger {
-	return w.Logger
+func (w *Worker) GetLoggerFunc() func() *logrus.Logger {
+	return w.LoggerFunc
 }

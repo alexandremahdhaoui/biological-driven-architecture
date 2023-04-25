@@ -14,7 +14,7 @@ type WorkerPool struct {
 	WorkerFactory WorkerFactory
 	StrategyFunc  WorkerPoolStrategyFunc
 	Replicas      int
-	Logger        *logrus.Logger
+	LoggerFunc    func() *logrus.Logger
 }
 
 func (p *WorkerPool) Init() Error {
@@ -150,8 +150,8 @@ func (p *WorkerPool) GetType() string {
 	return "worker-pool"
 }
 
-func (p *WorkerPool) GetLogger() *logrus.Logger {
-	return p.Logger
+func (p *WorkerPool) GetLoggerFunc() func() *logrus.Logger {
+	return p.LoggerFunc
 }
 
 //----------------------------------------------------------------------------------------------------------------------

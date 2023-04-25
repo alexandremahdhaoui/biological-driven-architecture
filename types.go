@@ -14,7 +14,7 @@ type Runtime interface {
 
 	GetName() string
 	GetType() string
-	GetLogger() *logrus.Logger
+	GetLoggerFunc() func() *logrus.Logger
 }
 
 type Builder[T any] interface {

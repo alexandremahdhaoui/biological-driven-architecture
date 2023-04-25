@@ -37,8 +37,7 @@ func DefaultLogger() *logrus.Logger {
 
 func NewLogEntry(runtime Runtime, operation LogOperation) func() *logrus.Entry {
 	return func() *logrus.Entry {
-		//return runtime.GetLogger().
-		return DefaultLogger().
+		return runtime.GetLoggerFunc()().
 			WithField(logFieldName, runtime.GetName()).
 			WithField(logFieldType, runtime.GetType()).
 			WithField(logFieldOperation, operation)

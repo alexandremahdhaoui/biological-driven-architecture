@@ -9,7 +9,7 @@ type Orchestrator struct {
 	Name        string
 	WorkerPools []*WorkerPool
 	Strategy    Strategy
-	Logger      *logrus.Logger
+	LoggerFunc  func() *logrus.Logger
 }
 
 func (o *Orchestrator) Init() Error {
@@ -88,6 +88,6 @@ func (o *Orchestrator) GetType() string {
 	return "orchestrator"
 }
 
-func (o *Orchestrator) GetLogger() *logrus.Logger {
-	return o.Logger
+func (o *Orchestrator) GetLoggerFunc() func() *logrus.Logger {
+	return o.LoggerFunc
 }
