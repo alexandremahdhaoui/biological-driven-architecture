@@ -75,16 +75,10 @@ func isLoggerDevelopment() bool {
 }
 
 func RuntimeLogger(runtime Runtime, operation LogOperation) *Logger {
-	runtimeLogger := runtime.GetLogger()
-	if runtimeLogger == nil {
-		panic("logger was evaluated to nil; please provide a logger")
-	}
-	runtimeLogger.Mutex.Lock()
-	logger := runtime.GetLogger().
+	logger := DefaultLogger().
 		With(zap.String(logFieldName, runtime.GetName())).
 		With(zap.String(logFieldType, runtime.GetType())).
 		With(zap.String(logFieldOperation, string(operation)))
-	runtimeLogger.Mutex.Unlock()
 	return &Logger{
 		Logger: logger,
 		Mutex:  &sync.Mutex{},
