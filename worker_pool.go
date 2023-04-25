@@ -76,17 +76,25 @@ func (p *WorkerPool) HandleError(err Error) Error {
 	return nil
 }
 
-func (p *WorkerPool) spawnWorker(i int, wg *sync.WaitGroup, errs Queue[Error]) {
-	LogDebugf(p, LogOperationInit, LogStatusProgress, "spawning worker %d", i)
+func (p *WorkerPool) respawnWorker(i int, wg *sync.WaitGroup, errs Queue[Error]) {
+	LogDebugf(p, LogOperationRun, LogStatusProgress, "respawn worker-%d", i)
 
 	// First Stop worker if exist
 	if w := p.Workers[i]; w != nil {
-		LogInfof(p, LogOperationInit, LogStatusProgress, "found existing worker-%d; stopping worker before respawn", i)
+		LogInfof(p, LogOperationRun, LogStatusProgress, "found existing worker-%d; stopping worker before respawn", i)
 		if err := w.Stop(); err != nil {
-			LogErrorf(p, LogOperationInit, LogStatusProgress, "error while stopping worker-%d; %w", i, err)
+			LogErrorf(p, LogOperationRun, LogStatusProgress, "error while stopping worker-%d; %w", i, err)
 			errs.Push(err)
 		}
 	}
+	p.spawnWorker(i, wg, errs)
+
+	// Initialize freshly respawned worker
+	p.Workers[i].Init()
+}
+
+func (p *WorkerPool) spawnWorker(i int, wg *sync.WaitGroup, errs Queue[Error]) {
+	LogDebugf(p, LogOperationInit, LogStatusProgress, "spawn worker-%d", i)
 
 	w, err := p.WorkerFactory.Spawn(fmt.Sprintf("%s-%d", p.Name, i))
 	if err != nil {
@@ -109,7 +117,7 @@ func WorkerPoolStrategyRunLoop(p *WorkerPool, i int, wg *sync.WaitGroup, errs Qu
 		w := p.Workers[i]
 		if w == nil {
 			LogDebugf(p, LogOperationRun, LogStatusProgress, "found nil worker-%d; spawning new worker", i)
-			p.spawnWorker(i, innerWg, errs)
+			p.respawnWorker(i, innerWg, errs)
 			innerWg.Wait()
 		}
 		WorkerPoolStrategyRunOnce(p, i, innerWg, errs)
