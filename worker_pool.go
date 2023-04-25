@@ -78,26 +78,35 @@ func (p *WorkerPool) HandleError(err Error) Error {
 }
 
 func (p *WorkerPool) spawnWorker(i int, wg *sync.WaitGroup, errs Queue[Error]) {
+	logEntry := NewLogEntry(p, LogOperationInit)
+	LogTracef(logEntry, LogStatusProgress, "spawning worker %d", i)
 	// First Stop worker if exist
 	if w := p.Workers[i]; w != nil {
+		LogInfof(logEntry, LogStatusProgress, "found existing worker-%d; stopping worker before respawn", i)
 		if err := w.Stop(); err != nil {
+			LogErrorf(logEntry, LogStatusProgress, "error while stopping worker-%d; %w", i, err)
 			errs.Push(err)
 		}
 	}
 	w, err := p.WorkerFactory.Spawn(fmt.Sprintf("%s-%d", p.Name, i))
 	if err != nil {
+		LogErrorf(logEntry, LogStatusProgress, "error while spawning worker-%d; %w", i, err)
 		p.HandleError(err)
 		errs.Push(err)
 	}
 	p.Workers[i] = w
 	wg.Done()
+	LogTracef(logEntry, LogStatusProgress, "successfully spawn worker-%d", i)
 }
 
 func WorkerPoolStrategyRunLoop(p *WorkerPool, i int, wg *sync.WaitGroup, errs Queue[Error]) {
+	logEntry := NewLogEntry(p, LogOperationRun)
+	LogTracef(logEntry, LogStatusProgress, "starting run loop for worker-%d", i)
 	for {
 		innerWg := &sync.WaitGroup{}
 		w := p.Workers[i]
-		if w != nil {
+		if w == nil {
+			LogTracef(logEntry, LogStatusProgress, "found nil worker-%d; spawning new worker", i)
 			p.spawnWorker(i, innerWg, errs)
 			innerWg.Wait()
 		}
@@ -108,16 +117,21 @@ func WorkerPoolStrategyRunLoop(p *WorkerPool, i int, wg *sync.WaitGroup, errs Qu
 }
 
 func WorkerPoolStrategyRunOnce(p *WorkerPool, i int, wg *sync.WaitGroup, errs Queue[Error]) {
+	logEntry := NewLogEntry(p, LogOperationRun)
+	LogTracef(logEntry, LogStatusProgress, "starting run for worker-%d", i)
 	w := p.Workers[i]
 	if w != nil {
+		LogTracef(logEntry, LogStatusProgress, "found nil worker-%d; worker should be initialized; got: nil; want: &Worker{}", i)
 		errs.Push(NewError(
 			"RuntimeError",
 			"worker should be initialized; got: nil; want: &Worker{}",
 			nil,
 		))
+		return
 	}
 	err := w.Run()
 	if err = w.HandleError(err); err != nil {
+		LogTracef(logEntry, LogStatusProgress, "error while running worker-%d; %w", i, err)
 		p.HandleError(err)
 		errs.Push(NewError(
 			"RuntimeError",

@@ -20,9 +20,10 @@ const (
 	LogOperationStop        LogOperation = "stop"
 	LogOperationHandleError LogOperation = "handle-error"
 
-	LogStatusStart   LogStatus = "start"
-	LogStatusSuccess LogStatus = "success"
-	LogStatusFailed  LogStatus = "failed"
+	LogStatusStart    LogStatus = "start"
+	LogStatusProgress LogStatus = "progress"
+	LogStatusSuccess  LogStatus = "success"
+	LogStatusFailed   LogStatus = "failed"
 )
 
 func DefaultLogger() *logrus.Logger {
