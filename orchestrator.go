@@ -13,13 +13,12 @@ type Orchestrator struct {
 
 func (o *Orchestrator) Init() Error {
 	LogDebug(o, LogOperationInit, LogStatusStart)
-
 	errs := DefaultQueue[Error]()
 	wg := &sync.WaitGroup{}
 
-	for i, _ := range o.WorkerPools {
+	wg.Add(len(o.WorkerPools))
+	for i := range o.WorkerPools {
 		i := i
-		wg.Add(1)
 		go func(wg *sync.WaitGroup) {
 			p := o.WorkerPools[i]
 			if err := o.Strategy.Init(p); err != nil {
@@ -33,13 +32,12 @@ func (o *Orchestrator) Init() Error {
 }
 func (o *Orchestrator) Run() Error {
 	LogDebug(o, LogOperationRun, LogStatusStart)
-
 	errs := DefaultQueue[Error]()
 	wg := &sync.WaitGroup{}
 
-	for i, _ := range o.WorkerPools {
+	wg.Add(len(o.WorkerPools))
+	for i := range o.WorkerPools {
 		i := i
-		wg.Add(1)
 		go func(wg *sync.WaitGroup) {
 			p := o.WorkerPools[i]
 			err := o.Strategy.Run(p)
@@ -53,7 +51,7 @@ func (o *Orchestrator) Run() Error {
 	return HandleErrorQueue(o, LogOperationRun, errs)
 }
 
-func (o *Orchestrator) HandleError(e Error) Error {
+func (o *Orchestrator) HandleError(err Error) Error {
 	return nil
 }
 
@@ -61,8 +59,9 @@ func (o *Orchestrator) Stop() Error {
 	LogDebug(o, LogOperationStop, LogStatusStart)
 	errs := DefaultQueue[Error]()
 	wg := &sync.WaitGroup{}
+
+	wg.Add(len(o.WorkerPools))
 	for _, p := range o.WorkerPools {
-		wg.Add(1)
 		p := p
 		go func(wg *sync.WaitGroup) {
 			err := o.Strategy.Stop(p)
