@@ -180,7 +180,9 @@ func (wf *WorkerFactory) Spawn(name string) (*Worker, Error) {
 		return nil, err
 	}
 	return &Worker{
+		Name:     name,
 		Strategy: wf.WorkerStrategy,
 		Receptor: receptor,
+		Logger:   DefaultLogger(),
 	}, nil
 }
