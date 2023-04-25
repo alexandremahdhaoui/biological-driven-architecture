@@ -35,65 +35,68 @@ func DefaultLogger() *logrus.Logger {
 	return l
 }
 
-func NewLogEntry(runtime Runtime, operation LogOperation) *logrus.Entry {
-	return runtime.GetLogger().
-		WithField(logFieldName, runtime.GetName()).
-		WithField(logFieldType, runtime.GetType()).
-		WithField(logFieldOperation, operation)
+func NewLogEntry(runtime Runtime, operation LogOperation) func() *logrus.Entry {
+	return func() *logrus.Entry {
+		//return runtime.GetLogger().
+		return DefaultLogger().
+			WithField(logFieldName, runtime.GetName()).
+			WithField(logFieldType, runtime.GetType()).
+			WithField(logFieldOperation, operation)
+	}
 }
 
-func LogTrace(entry *logrus.Entry, status LogStatus) {
-	entry.WithField(logFieldStatus, status).Trace()
+func LogTrace(entry func() *logrus.Entry, status LogStatus) {
+	entry().WithField(logFieldStatus, status).Trace()
 }
 
-func LogTracef(entry *logrus.Entry, status LogStatus, format string, args ...any) {
-	entry.WithField(logFieldStatus, status).Tracef(format, args)
+func LogTracef(entry func() *logrus.Entry, status LogStatus, format string, args ...any) {
+	entry().WithField(logFieldStatus, status).Tracef(format, args)
 }
 
-func LogDebug(entry *logrus.Entry, status LogStatus) {
-	entry.WithField(logFieldStatus, status).Debug()
+func LogDebug(entry func() *logrus.Entry, status LogStatus) {
+	entry().WithField(logFieldStatus, status).Debug()
 }
 
-func LogDebugf(entry *logrus.Entry, status LogStatus, format string, args ...any) {
-	entry.WithField(logFieldStatus, status).Debugf(format, args)
+func LogDebugf(entry func() *logrus.Entry, status LogStatus, format string, args ...any) {
+	entry().WithField(logFieldStatus, status).Debugf(format, args)
 }
 
-func LogInfo(entry *logrus.Entry, status LogStatus) {
-	entry.WithField(logFieldStatus, status).Info()
+func LogInfo(entry func() *logrus.Entry, status LogStatus) {
+	entry().WithField(logFieldStatus, status).Info()
 }
 
-func LogInfof(entry *logrus.Entry, status LogStatus, format string, args ...any) {
-	entry.WithField(logFieldStatus, status).Infof(format, args)
+func LogInfof(entry func() *logrus.Entry, status LogStatus, format string, args ...any) {
+	entry().WithField(logFieldStatus, status).Infof(format, args)
 }
 
-func LogWarn(entry *logrus.Entry, status LogStatus) {
-	entry.WithField(logFieldStatus, status).Warn()
+func LogWarn(entry func() *logrus.Entry, status LogStatus) {
+	entry().WithField(logFieldStatus, status).Warn()
 }
 
-func LogWarnf(entry *logrus.Entry, status LogStatus, format string, args ...any) {
-	entry.WithField(logFieldStatus, status).Warnf(format, args)
+func LogWarnf(entry func() *logrus.Entry, status LogStatus, format string, args ...any) {
+	entry().WithField(logFieldStatus, status).Warnf(format, args)
 }
 
-func LogError(entry *logrus.Entry, status LogStatus) {
-	entry.WithField(logFieldStatus, status).Error()
+func LogError(entry func() *logrus.Entry, status LogStatus) {
+	entry().WithField(logFieldStatus, status).Error()
 }
 
-func LogErrorf(entry *logrus.Entry, status LogStatus, format string, args ...any) {
-	entry.WithField(logFieldStatus, status).Errorf(format, args)
+func LogErrorf(entry func() *logrus.Entry, status LogStatus, format string, args ...any) {
+	entry().WithField(logFieldStatus, status).Errorf(format, args)
 }
 
-func LogFatal(entry *logrus.Entry, status LogStatus) {
-	entry.WithField(logFieldStatus, status).Fatal()
+func LogFatal(entry func() *logrus.Entry, status LogStatus) {
+	entry().WithField(logFieldStatus, status).Fatal()
 }
 
-func LogFatalf(entry *logrus.Entry, status LogStatus, format string, args ...any) {
-	entry.WithField(logFieldStatus, status).Fatalf(format, args)
+func LogFatalf(entry func() *logrus.Entry, status LogStatus, format string, args ...any) {
+	entry().WithField(logFieldStatus, status).Fatalf(format, args)
 }
 
-func LogPanic(entry *logrus.Entry, status LogStatus) {
-	entry.WithField(logFieldStatus, status).Panic()
+func LogPanic(entry func() *logrus.Entry, status LogStatus) {
+	entry().WithField(logFieldStatus, status).Panic()
 }
 
-func LogPanicf(entry *logrus.Entry, status LogStatus, format string, args ...any) {
-	entry.WithField(logFieldStatus, status).Panicf(format, args)
+func LogPanicf(entry func() *logrus.Entry, status LogStatus, format string, args ...any) {
+	entry().WithField(logFieldStatus, status).Panicf(format, args)
 }
