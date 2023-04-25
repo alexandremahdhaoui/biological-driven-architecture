@@ -120,7 +120,7 @@ func WorkerPoolStrategyRunOnce(p *WorkerPool, i int, wg *sync.WaitGroup, errs Qu
 	logEntry := NewLogEntry(p, LogOperationRun)
 	LogTracef(logEntry, LogStatusProgress, "starting run for worker-%d", i)
 	w := p.Workers[i]
-	if w != nil {
+	if w == nil {
 		LogTracef(logEntry, LogStatusProgress, "found nil worker-%d; worker should be initialized; got: nil; want: &Worker{}", i)
 		errs.Push(NewError(
 			"RuntimeError",
