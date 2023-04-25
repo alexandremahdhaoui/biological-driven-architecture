@@ -23,15 +23,19 @@ func (p *WorkerPool) Init() Error {
 
 	p.Workers = make([]*Worker, p.Replicas)
 
-	wg.Add(p.Replicas)
 	for i := 0; i < p.Replicas; i++ {
+		wg.Add(1)
 		go p.spawnWorker(i, wg, errs)
 	}
 	wg.Wait()
 
-	wg.Add(p.Replicas)
 	for i := 0; i < p.Replicas; i++ {
-		go p.Workers[i].Init()
+		i := i
+		wg.Add(1)
+		go func() {
+			p.Workers[i].Init()
+			wg.Done()
+		}()
 	}
 	wg.Wait()
 
@@ -43,9 +47,9 @@ func (p *WorkerPool) Run() Error {
 	errs := DefaultQueue[Error]()
 	wg := &sync.WaitGroup{}
 
-	wg.Add(len(p.Workers))
 	for i := range p.Workers {
 		i := i
+		wg.Add(1)
 		go p.StrategyFunc(p, i, wg, errs)
 	}
 	wg.Wait()
@@ -114,11 +118,14 @@ func WorkerPoolStrategyRunLoop(p *WorkerPool, i int, wg *sync.WaitGroup, errs Qu
 
 	for {
 		innerWg := &sync.WaitGroup{}
+		innerWg.Add(1)
+
 		w := p.Workers[i]
 		if w == nil {
 			LogDebugf(p, LogOperationRun, LogStatusProgress, "found nil worker-%d; spawning new worker", i)
 			p.respawnWorker(i, innerWg, errs)
 			innerWg.Wait()
+			innerWg.Add(1)
 		}
 		WorkerPoolStrategyRunOnce(p, i, innerWg, errs)
 		innerWg.Wait()

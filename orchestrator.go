@@ -16,9 +16,9 @@ func (o *Orchestrator) Init() Error {
 	errs := DefaultQueue[Error]()
 	wg := &sync.WaitGroup{}
 
-	wg.Add(len(o.WorkerPools))
 	for i := range o.WorkerPools {
 		i := i
+		wg.Add(1)
 		go func(wg *sync.WaitGroup) {
 			p := o.WorkerPools[i]
 			if err := o.Strategy.Init(p); err != nil {
@@ -35,9 +35,9 @@ func (o *Orchestrator) Run() Error {
 	errs := DefaultQueue[Error]()
 	wg := &sync.WaitGroup{}
 
-	wg.Add(len(o.WorkerPools))
 	for i := range o.WorkerPools {
 		i := i
+		wg.Add(1)
 		go func(wg *sync.WaitGroup) {
 			p := o.WorkerPools[i]
 			err := o.Strategy.Run(p)
@@ -60,9 +60,9 @@ func (o *Orchestrator) Stop() Error {
 	errs := DefaultQueue[Error]()
 	wg := &sync.WaitGroup{}
 
-	wg.Add(len(o.WorkerPools))
 	for _, p := range o.WorkerPools {
 		p := p
+		wg.Add(1)
 		go func(wg *sync.WaitGroup) {
 			err := o.Strategy.Stop(p)
 			if err != nil {
