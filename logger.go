@@ -45,21 +45,21 @@ func DefaultLogger() *zap.Logger {
 }
 
 func getLoggerLevel() zap.AtomicLevel {
-	if runtime.GOOS != "darwin" {
+	if runtime.GOOS == "darwin" {
 		return zap.NewAtomicLevelAt(zap.DebugLevel)
 	}
 	return zap.NewAtomicLevelAt(zap.InfoLevel)
 }
 
 func getLoggerEncoding() string {
-	if runtime.GOOS != "darwin" {
+	if runtime.GOOS == "darwin" {
 		return "console"
 	}
 	return "json"
 }
 
 func isLoggerDevelopment() bool {
-	if runtime.GOOS != "darwin" {
+	if runtime.GOOS == "darwin" {
 		return true
 	}
 	return false
