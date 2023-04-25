@@ -1,16 +1,12 @@
 package biological_driven_architecture
 
-import (
-	"go.uber.org/zap"
-)
-
 // Worker is a wrapper struct around a concrete implementation of a Runtime.
 // A Worker holds a reference to a Strategy. The Strategy is injected in the worker by the WorkerFactory
 type Worker struct {
 	Name     string
 	Strategy Strategy
 	Receptor Runtime
-	Logger   *zap.Logger
+	Logger   *Logger
 }
 
 func (w *Worker) Init() Error {
@@ -60,6 +56,6 @@ func (w *Worker) GetType() string {
 	return "worker"
 }
 
-func (w *Worker) GetLogger() *zap.Logger {
+func (w *Worker) GetLogger() *Logger {
 	return w.Logger
 }

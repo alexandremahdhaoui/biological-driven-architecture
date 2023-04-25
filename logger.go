@@ -3,6 +3,7 @@ package biological_driven_architecture
 import (
 	"go.uber.org/zap"
 	"runtime"
+	"sync"
 )
 
 type LogOperation string
@@ -25,7 +26,12 @@ const (
 	LogStatusFailed   LogStatus = "failed"
 )
 
-func DefaultLogger() *zap.Logger {
+type Logger struct {
+	*zap.Logger
+	Mutex *sync.Mutex
+}
+
+func DefaultLogger() *Logger {
 	logger, err := zap.Config{
 		Level:       getLoggerLevel(),
 		Development: isLoggerDevelopment(),
@@ -41,7 +47,10 @@ func DefaultLogger() *zap.Logger {
 	if err != nil {
 		panic(err)
 	}
-	return logger
+	return &Logger{
+		Logger: logger,
+		Mutex:  &sync.Mutex{},
+	}
 }
 
 func getLoggerLevel() zap.AtomicLevel {
@@ -65,57 +74,87 @@ func isLoggerDevelopment() bool {
 	return false
 }
 
-func RuntimeLogger(runtime Runtime, operation LogOperation) *zap.Logger {
-	return runtime.GetLogger().
+func RuntimeLogger(runtime Runtime, operation LogOperation) *Logger {
+	runtime.GetLogger().Mutex.Lock()
+	logger := runtime.GetLogger().
 		With(zap.String(logFieldName, runtime.GetName())).
 		With(zap.String(logFieldType, runtime.GetType())).
 		With(zap.String(logFieldOperation, string(operation)))
+	runtime.GetLogger().Mutex.Unlock()
+	return &Logger{
+		Logger: logger,
+		Mutex:  &sync.Mutex{},
+	}
 }
 
-func LogDebug(logger *zap.Logger, status LogStatus) {
+func LogDebug(logger *Logger, status LogStatus) {
+	logger.Mutex.Lock()
 	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Debug()
+	logger.Mutex.Unlock()
 }
 
-func LogDebugf(logger *zap.Logger, status LogStatus, format string, args ...interface{}) {
+func LogDebugf(logger *Logger, status LogStatus, format string, args ...interface{}) {
+	logger.Mutex.Lock()
 	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Debugf(format, args)
+	logger.Mutex.Unlock()
 }
 
-func LogInfo(logger *zap.Logger, status LogStatus) {
+func LogInfo(logger *Logger, status LogStatus) {
+	logger.Mutex.Lock()
 	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Info()
+	logger.Mutex.Unlock()
 }
 
-func LogInfof(logger *zap.Logger, status LogStatus, format string, args ...interface{}) {
+func LogInfof(logger *Logger, status LogStatus, format string, args ...interface{}) {
+	logger.Mutex.Lock()
 	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Infof(format, args)
+	logger.Mutex.Unlock()
 }
 
-func LogWarn(logger *zap.Logger, status LogStatus) {
+func LogWarn(logger *Logger, status LogStatus) {
+	logger.Mutex.Lock()
 	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Warn()
+	logger.Mutex.Unlock()
 }
 
-func LogWarnf(logger *zap.Logger, status LogStatus, format string, args ...interface{}) {
+func LogWarnf(logger *Logger, status LogStatus, format string, args ...interface{}) {
+	logger.Mutex.Lock()
 	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Warnf(format, args)
+	logger.Mutex.Unlock()
 }
 
-func LogError(logger *zap.Logger, status LogStatus) {
+func LogError(logger *Logger, status LogStatus) {
+	logger.Mutex.Lock()
 	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Error()
+	logger.Mutex.Unlock()
 }
 
-func LogErrorf(logger *zap.Logger, status LogStatus, format string, args ...interface{}) {
+func LogErrorf(logger *Logger, status LogStatus, format string, args ...interface{}) {
+	logger.Mutex.Lock()
 	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Errorf(format, args)
+	logger.Mutex.Unlock()
 }
 
-func LogFatal(logger *zap.Logger, status LogStatus) {
+func LogFatal(logger *Logger, status LogStatus) {
+	logger.Mutex.Lock()
 	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Fatal()
+	logger.Mutex.Unlock()
 }
 
-func LogFatalf(logger *zap.Logger, status LogStatus, format string, args ...interface{}) {
+func LogFatalf(logger *Logger, status LogStatus, format string, args ...interface{}) {
+	logger.Mutex.Lock()
 	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Fatalf(format, args)
+	logger.Mutex.Unlock()
 }
 
-func LogPanic(logger *zap.Logger, status LogStatus) {
+func LogPanic(logger *Logger, status LogStatus) {
+	logger.Mutex.Lock()
 	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Panic()
+	logger.Mutex.Unlock()
 }
 
-func LogPanicf(logger *zap.Logger, status LogStatus, format string, args ...interface{}) {
+func LogPanicf(logger *Logger, status LogStatus, format string, args ...interface{}) {
+	logger.Mutex.Lock()
 	logger.With(zap.String(logFieldStatus, string(status))).Sugar().Panicf(format, args)
+	logger.Mutex.Unlock()
 }

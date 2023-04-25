@@ -1,9 +1,5 @@
 package biological_driven_architecture
 
-import (
-	"go.uber.org/zap"
-)
-
 type Runtime interface {
 	// Operations
 
@@ -16,7 +12,7 @@ type Runtime interface {
 
 	GetName() string
 	GetType() string
-	GetLogger() *zap.Logger
+	GetLogger() *Logger
 }
 
 type Builder[T any] interface {

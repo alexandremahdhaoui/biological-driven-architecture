@@ -2,7 +2,6 @@ package biological_driven_architecture
 
 import (
 	"fmt"
-	"go.uber.org/zap"
 	"sync"
 )
 
@@ -14,7 +13,7 @@ type WorkerPool struct {
 	WorkerFactory WorkerFactory
 	StrategyFunc  WorkerPoolStrategyFunc
 	Replicas      int
-	Logger        *zap.Logger
+	Logger        *Logger
 }
 
 func (p *WorkerPool) Init() Error {
@@ -150,7 +149,7 @@ func (p *WorkerPool) GetType() string {
 	return "worker-pool"
 }
 
-func (p *WorkerPool) GetLogger() *zap.Logger {
+func (p *WorkerPool) GetLogger() *Logger {
 	return p.Logger
 }
 

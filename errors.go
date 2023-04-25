@@ -1,9 +1,5 @@
 package biological_driven_architecture
 
-import (
-	"go.uber.org/zap"
-)
-
 type ErrorType string
 type ErrorSeverity int
 
@@ -45,7 +41,7 @@ func NewError(errorType ErrorType, msg string, subErrors []Error) Error {
 	}
 }
 
-func HandleErrorQueue(logger *zap.Logger, errs Queue[Error]) Error {
+func HandleErrorQueue(logger *Logger, errs Queue[Error]) Error {
 	if errs.Length() == 0 {
 		LogDebug(logger, LogStatusSuccess)
 		return nil

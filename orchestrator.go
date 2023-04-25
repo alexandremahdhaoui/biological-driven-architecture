@@ -1,7 +1,6 @@
 package biological_driven_architecture
 
 import (
-	"go.uber.org/zap"
 	"sync"
 )
 
@@ -9,7 +8,7 @@ type Orchestrator struct {
 	Name        string
 	WorkerPools []*WorkerPool
 	Strategy    Strategy
-	Logger      *zap.Logger
+	Logger      *Logger
 }
 
 func (o *Orchestrator) Init() Error {
@@ -88,6 +87,6 @@ func (o *Orchestrator) GetType() string {
 	return "orchestrator"
 }
 
-func (o *Orchestrator) GetLogger() *zap.Logger {
+func (o *Orchestrator) GetLogger() *Logger {
 	return o.Logger
 }
