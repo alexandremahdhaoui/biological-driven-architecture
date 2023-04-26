@@ -1,6 +1,7 @@
 package biological_driven_architecture
 
 import (
+	"context"
 	"fmt"
 	"sync"
 	"time"
@@ -254,4 +255,103 @@ func (b *inMemoryLeaserBuilder) Build() Leaser {
 // NewInMemoryLeaserBuilder returns a new instance of inMemoryLeaserBuilder.
 func NewInMemoryLeaserBuilder() LeaserBuilder {
 	return &inMemoryLeaserBuilder{}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//- Queue
+
+// Queue was refactored and now provides 2 functions.
+// - Receiver()
+// - Sender()
+//
+// Even though DefaultQueue is now a strange wrapper over a channel, It enables us to provide different types of queues.
+// Queue is intended for multiple uses cases, such as abstracting a clustered Queue over the network.
+type Queue[T any] interface {
+	Runtime
+	Receiver() chan T
+	// Sender methods returns a reference to a chan T
+	Sender() chan T
+}
+
+// The inMemoryQueue struct is a generic type that holds a channel for concurrent access
+type inMemoryQueue[T any] struct {
+	Name string
+	Ctx  context.Context
+	//safeArray SafeArray[T]
+
+	capacity int
+	receiver chan T
+	sender   chan T
+
+	logger *Logger
+	//mutex  *sync.Mutex
+}
+
+func (q *inMemoryQueue[T]) Init() Error {
+	//q.safeArray = DefaultSafeArray[T]()
+	//q.mutex = &sync.Mutex{}
+	q.receiver = make(chan T, q.capacity)
+	q.sender = make(chan T, q.capacity)
+	return nil
+}
+
+func (q *inMemoryQueue[T]) Run() Error {
+	LogInfof(q, LogOperationRun, LogStatusStart, "start queue: %s", q.GetName())
+	wg := &sync.WaitGroup{}
+	wg.Add(1)
+
+	go func(wg *sync.WaitGroup) {
+		select {
+		case <-q.Ctx.Done():
+			LogInfof(q, LogOperationRun, LogStatusSuccess, "received stop signal for queue: %s", q.GetName())
+			q.Stop()
+			wg.Done()
+		case item := <-q.receiver:
+			q.sender <- item
+		}
+	}(wg)
+
+	wg.Wait()
+	return nil
+}
+
+func (q *inMemoryQueue[T]) Stop() Error {
+	LogInfof(q, LogOperationStop, LogStatusStart, "stopping queue: %s", q.GetName())
+	q.Ctx.Done()
+	close(q.receiver)
+	close(q.sender)
+	LogInfof(q, LogOperationStop, LogStatusSuccess, "successfully stopped queue: %s", q.GetName())
+	return nil
+}
+
+func (q *inMemoryQueue[T]) HandleError(err Error) Error {
+	return nil
+}
+
+func (q *inMemoryQueue[T]) GetName() string {
+	return q.Name
+}
+
+func (q *inMemoryQueue[T]) GetType() string {
+	return "safeArray-in-memory"
+}
+
+func (q *inMemoryQueue[T]) GetLogger() *Logger {
+	return q.logger
+}
+
+func (q *inMemoryQueue[T]) Receiver() chan T {
+	return q.receiver
+}
+
+func (q *inMemoryQueue[T]) Sender() chan T {
+	return q.sender
+}
+
+// DefaultQueue function returns a new inMemoryQueue with an initialized channel
+func DefaultQueue[T any](name string, ctx context.Context) Queue[T] {
+	return &inMemoryQueue[T]{
+		Name: name,
+		Ctx:  ctx,
+	}
 }
