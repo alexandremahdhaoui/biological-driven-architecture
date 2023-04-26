@@ -123,16 +123,6 @@ type inMemorySafeArray[T any] struct {
 	mutex *sync.Mutex
 }
 
-func DefaultSafeArray[T any]() SafeArray[T] {
-	return DefaultSafeArrayWithSize[T](0)
-}
-
-func DefaultSafeArrayWithSize[T any](size int) SafeArray[T] {
-	return &inMemorySafeArray[T]{
-		array: make([]T, size),
-	}
-}
-
 func (a *inMemorySafeArray[T]) Append(item T) {
 	a.mutex.Lock()
 	a.array = append(a.array, item)
@@ -192,6 +182,17 @@ func (a *inMemorySafeArray[T]) Length() int {
 	length := len(a.array)
 	a.mutex.Unlock()
 	return length
+}
+
+func DefaultSafeArray[T any]() SafeArray[T] {
+	return DefaultSafeArrayWithSize[T](0)
+}
+
+func DefaultSafeArrayWithSize[T any](size int) SafeArray[T] {
+	return &inMemorySafeArray[T]{
+		array: make([]T, size),
+		mutex: &sync.Mutex{},
+	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
