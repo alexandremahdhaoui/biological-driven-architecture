@@ -6,49 +6,49 @@ import (
 
 type Orchestrator struct {
 	Name        string
-	WorkerPools []*WorkerPool
+	WorkerPools SafeArray[*WorkerPool]
 	Strategy    Strategy
 	Logger      *Logger
 }
 
 func (o *Orchestrator) Init() Error {
 	LogDebug(o, LogOperationInit, LogStatusStart)
-	errs := DefaultQueue[Error]()
+	errs := DefaultSafeArray[Error]()
 	wg := &sync.WaitGroup{}
 
-	for i := range o.WorkerPools {
+	for i := 0; i < o.WorkerPools.Length(); i++ {
 		i := i
 		wg.Add(1)
 		go func(wg *sync.WaitGroup) {
-			p := o.WorkerPools[i]
+			p, _ := o.WorkerPools.Get(i)
 			if err := o.Strategy.Init(p); err != nil {
-				errs.Push(err)
+				errs.Append(err)
 			}
 			wg.Done()
 		}(wg)
 	}
 	wg.Wait()
-	return HandleErrorQueue(o, LogOperationInit, errs)
+	return HandleErrors(o, LogOperationInit, errs)
 }
 func (o *Orchestrator) Run() Error {
 	LogDebug(o, LogOperationRun, LogStatusStart)
-	errs := DefaultQueue[Error]()
+	errs := DefaultSafeArray[Error]()
 	wg := &sync.WaitGroup{}
 
-	for i := range o.WorkerPools {
+	for i := 0; i < o.WorkerPools.Length(); i++ {
 		i := i
 		wg.Add(1)
 		go func(wg *sync.WaitGroup) {
-			p := o.WorkerPools[i]
+			p, _ := o.WorkerPools.Get(i)
 			err := o.Strategy.Run(p)
 			if err != nil {
-				errs.Push(err)
+				errs.Append(err)
 			}
 			wg.Done()
 		}(wg)
 	}
 	wg.Wait()
-	return HandleErrorQueue(o, LogOperationRun, errs)
+	return HandleErrors(o, LogOperationRun, errs)
 }
 
 func (o *Orchestrator) HandleError(err Error) Error {
@@ -57,22 +57,22 @@ func (o *Orchestrator) HandleError(err Error) Error {
 
 func (o *Orchestrator) Stop() Error {
 	LogDebug(o, LogOperationStop, LogStatusStart)
-	errs := DefaultQueue[Error]()
+	errs := DefaultSafeArray[Error]()
 	wg := &sync.WaitGroup{}
 
-	for _, p := range o.WorkerPools {
-		p := p
+	for i := 0; i < o.WorkerPools.Length(); i++ {
+		p, _ := o.WorkerPools.Get(i)
 		wg.Add(1)
 		go func(wg *sync.WaitGroup) {
 			err := o.Strategy.Stop(p)
 			if err != nil {
-				errs.Push(err)
+				errs.Append(err)
 			}
 			wg.Done()
 		}(wg)
 	}
 	wg.Wait()
-	return HandleErrorQueue(o, LogOperationStop, errs)
+	return HandleErrors(o, LogOperationStop, errs)
 }
 
 func (o *Orchestrator) GetName() string {

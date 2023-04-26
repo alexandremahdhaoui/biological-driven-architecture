@@ -5,11 +5,9 @@ import (
 	"sync"
 )
 
-type WorkerPoolStrategyFunc func(p *WorkerPool, i int, wg *sync.WaitGroup, errors Queue[Error])
-
 type WorkerPool struct {
 	Name          string
-	Workers       []*Worker
+	Workers       SafeArray[*Worker]
 	WorkerFactory WorkerFactory
 	StrategyFunc  WorkerPoolStrategyFunc
 	Replicas      int
@@ -18,10 +16,10 @@ type WorkerPool struct {
 
 func (p *WorkerPool) Init() Error {
 	LogDebug(p, LogOperationInit, LogStatusStart)
-	errs := DefaultQueue[Error]()
+	errs := DefaultSafeArray[Error]()
 	wg := &sync.WaitGroup{}
 
-	p.Workers = make([]*Worker, p.Replicas)
+	p.Workers = DefaultSafeArrayWithSize[*Worker](p.Replicas)
 
 	for i := 0; i < p.Replicas; i++ {
 		wg.Add(1)
@@ -33,133 +31,88 @@ func (p *WorkerPool) Init() Error {
 		i := i
 		wg.Add(1)
 		go func() {
-			p.Workers[i].Init()
+			w, _ := p.Workers.Get(i)
+			w.Init()
 			wg.Done()
 		}()
 	}
 	wg.Wait()
 
-	return HandleErrorQueue(p, LogOperationInit, errs)
+	return HandleErrors(p, LogOperationInit, errs)
 }
 
 func (p *WorkerPool) Run() Error {
 	LogDebug(p, LogOperationRun, LogStatusStart)
-	errs := DefaultQueue[Error]()
+	errs := DefaultSafeArray[Error]()
 	wg := &sync.WaitGroup{}
 
-	for i := range p.Workers {
+	for i := 0; i < p.Workers.Length(); i++ {
 		i := i
 		wg.Add(1)
 		go p.StrategyFunc(p, i, wg, errs)
 	}
 	wg.Wait()
-	return HandleErrorQueue(p, LogOperationRun, errs)
+	return HandleErrors(p, LogOperationRun, errs)
 }
 
 func (p *WorkerPool) Stop() Error {
 	LogDebug(p, LogOperationStop, LogStatusStart)
-	errs := DefaultQueue[Error]()
+	errs := DefaultSafeArray[Error]()
 	wg := &sync.WaitGroup{}
 
-	wg.Add(len(p.Workers))
-	for _, w := range p.Workers {
-		w := w
+	for i := 0; i < p.Workers.Length(); i++ {
+		w, _ := p.Workers.Get(i)
+		wg.Add(1)
 		go func(wg *sync.WaitGroup) {
 			err := w.Stop()
 			if err != nil {
-				errs.Push(err)
+				errs.Append(err)
 			}
 			wg.Done()
 		}(wg)
 	}
 	wg.Wait()
-	return HandleErrorQueue(p, LogOperationStop, errs)
+	return HandleErrors(p, LogOperationStop, errs)
 }
 
 func (p *WorkerPool) HandleError(err Error) Error {
 	return nil
 }
 
-func (p *WorkerPool) respawnWorker(i int, wg *sync.WaitGroup, errs Queue[Error]) {
+func (p *WorkerPool) respawnWorker(i int, wg *sync.WaitGroup, errs SafeArray[Error]) {
 	LogDebugf(p, LogOperationRun, LogStatusProgress, "respawn worker-%d", i)
 
-	// First Stop worker if exist
-	if w := p.Workers[i]; w != nil {
+	w, _ := p.Workers.Get(i)
+
+	// First stop worker if pointer not nil
+	if w != nil {
 		LogInfof(p, LogOperationRun, LogStatusProgress, "found existing worker-%d; stopping worker before respawn", i)
 		if err := w.Stop(); err != nil {
-			LogErrorf(p, LogOperationRun, LogStatusProgress, "error while stopping worker-%d; %w", i, err)
-			errs.Push(err)
+			LogErrorf(p, LogOperationRun, LogStatusProgress, "error while stopping worker-%d; %v", i, err)
+			errs.Append(err)
 		}
 	}
 	p.spawnWorker(i, wg, errs)
 
 	// Initialize freshly respawned worker
-	p.Workers[i].Init()
+	w.Init()
 }
 
-func (p *WorkerPool) spawnWorker(i int, wg *sync.WaitGroup, errs Queue[Error]) {
+func (p *WorkerPool) spawnWorker(i int, wg *sync.WaitGroup, errs SafeArray[Error]) {
 	LogDebugf(p, LogOperationInit, LogStatusProgress, "spawn worker-%d", i)
 
 	w, err := p.WorkerFactory.Spawn(fmt.Sprintf("%s-%d", p.Name, i))
 	if err != nil {
-		LogErrorf(p, LogOperationInit, LogStatusProgress, "error while spawning worker-%d; %w", i, err)
+		LogErrorf(p, LogOperationInit, LogStatusProgress, "error while spawning worker-%d; %v", i, err)
 		p.HandleError(err)
-		errs.Push(err)
+		errs.Append(err)
 	}
 
-	p.Workers[i] = w
+	if ok := p.Workers.Set(i, w); !ok {
+		LogFatalf(p, LogOperationInit, LogStatusFailed, "failed to spawn worker-%d; unable to WorkerPool.Workers.Set(%d, worker)", i, i)
+	}
 	wg.Done()
-
 	LogDebugf(p, LogOperationInit, LogStatusProgress, "successfully spawn worker-%d", i)
-}
-
-func WorkerPoolStrategyRunLoop(p *WorkerPool, i int, wg *sync.WaitGroup, errs Queue[Error]) {
-	LogDebugf(p, LogOperationRun, LogStatusProgress, "starting run loop for worker-%d", i)
-
-	for {
-		innerWg := &sync.WaitGroup{}
-		innerWg.Add(1)
-
-		w := p.Workers[i]
-		if w == nil {
-			LogDebugf(p, LogOperationRun, LogStatusProgress, "found nil worker-%d; spawning new worker", i)
-			p.respawnWorker(i, innerWg, errs)
-			innerWg.Wait()
-			innerWg.Add(1)
-		}
-		WorkerPoolStrategyRunOnce(p, i, innerWg, errs)
-		innerWg.Wait()
-	}
-
-	wg.Done() // Unreachable atm; Will be useful when implementing a signal to interrupt the run process.
-}
-
-func WorkerPoolStrategyRunOnce(p *WorkerPool, i int, wg *sync.WaitGroup, errs Queue[Error]) {
-	LogDebugf(p, LogOperationRun, LogStatusProgress, "starting run for worker-%d", i)
-
-	w := p.Workers[i]
-	if w == nil {
-		LogDebugf(p, LogOperationRun, LogStatusProgress, "found nil worker-%d; worker should be initialized; got: nil; want: &Worker{}", i)
-		errs.Push(NewError(
-			"RuntimeError",
-			"worker should be initialized; got: nil; want: &Worker{}",
-			nil,
-		))
-		return
-	}
-
-	err := w.Run()
-	if err = w.HandleError(err); err != nil {
-		LogDebugf(p, LogOperationRun, LogStatusProgress, "error while running worker-%d; %w", i, err)
-		p.HandleError(err)
-		errs.Push(NewError(
-			"RuntimeError",
-			"worker should be initialized; got: nil; want: &Worker{}",
-			nil,
-		))
-	}
-
-	wg.Done() // Unreachable atm; Will be useful when implementing a signal to interrupt the run process.
 }
 
 func (p *WorkerPool) GetName() string {
@@ -174,7 +127,62 @@ func (p *WorkerPool) GetLogger() *Logger {
 	return p.Logger
 }
 
-//----------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------
+// - WorkerPoolStrategyFunc
+
+type WorkerPoolStrategyFunc func(p *WorkerPool, i int, wg *sync.WaitGroup, errors SafeArray[Error])
+
+func WorkerPoolStrategyRunLoop(p *WorkerPool, i int, wg *sync.WaitGroup, errs SafeArray[Error]) {
+	LogDebugf(p, LogOperationRun, LogStatusProgress, "starting run loop for worker-%d", i)
+
+	for {
+		innerWg := &sync.WaitGroup{}
+		innerWg.Add(1)
+
+		w, _ := p.Workers.Get(i)
+		if w == nil {
+			LogDebugf(p, LogOperationRun, LogStatusProgress, "found nil worker-%d; spawning new worker", i)
+			p.respawnWorker(i, innerWg, errs)
+			innerWg.Wait()
+			innerWg.Add(1)
+		}
+		WorkerPoolStrategyRunOnce(p, i, innerWg, errs)
+		innerWg.Wait()
+	}
+
+	wg.Done() // Unreachable atm; Will be useful when implementing a signal to interrupt the run process.
+}
+
+func WorkerPoolStrategyRunOnce(p *WorkerPool, i int, wg *sync.WaitGroup, errs SafeArray[Error]) {
+	LogDebugf(p, LogOperationRun, LogStatusProgress, "starting run for worker-%d", i)
+
+	w, _ := p.Workers.Get(i)
+	if w == nil {
+		LogDebugf(p, LogOperationRun, LogStatusProgress, "found nil worker-%d; worker should be initialized; got: nil; want: &Worker{}", i)
+		errs.Append(NewError(
+			"RuntimeError",
+			"worker should be initialized; got: nil; want: &Worker{}",
+			nil,
+		))
+		return
+	}
+
+	err := w.Run()
+	if err = w.HandleError(err); err != nil {
+		LogDebugf(p, LogOperationRun, LogStatusProgress, "error while running worker-%d; %v", i, err)
+		p.HandleError(err)
+		errs.Append(NewError(
+			"RuntimeError",
+			"worker should be initialized; got: nil; want: &Worker{}",
+			nil,
+		))
+	}
+
+	wg.Done() // Unreachable atm; Will be useful when implementing a signal to interrupt the run process.
+}
+
+// ----------------------------------------------------------------------------------------------------------------------
+// - WorkerFactory
 
 type WorkerFactory struct {
 	ReceptorFactory Builder[Runtime]

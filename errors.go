@@ -41,16 +41,18 @@ func NewError(errorType ErrorType, msg string, subErrors []Error) Error {
 	}
 }
 
-func HandleErrorQueue(runtime Runtime, logOperation LogOperation, errs Queue[Error]) Error {
+func HandleErrors(runtime Runtime, logOperation LogOperation, errs SafeArray[Error]) Error {
 	if errs.Length() == 0 {
 		LogDebug(runtime, logOperation, LogStatusSuccess)
 		return nil
 	}
 
 	subErrors := make([]Error, 0)
-	for err, ok := errs.Pull(); ok; errs.Pull() {
-		LogDebugf(runtime, logOperation, LogStatusFailed, "%+v", *err)
-		subErrors = append(subErrors, err)
+	for i := 0; i < errs.Length(); i++ {
+		if err, ok := errs.Get(i); ok {
+			LogDebugf(runtime, logOperation, LogStatusFailed, "%+v", *err)
+			subErrors = append(subErrors, err)
+		}
 	}
 
 	return NewError("ErrorList", "", subErrors)

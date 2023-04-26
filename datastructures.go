@@ -124,7 +124,13 @@ type inMemorySafeArray[T any] struct {
 }
 
 func DefaultSafeArray[T any]() SafeArray[T] {
-	return &inMemorySafeArray[T]{}
+	return DefaultSafeArrayWithSize[T](0)
+}
+
+func DefaultSafeArrayWithSize[T any](size int) SafeArray[T] {
+	return &inMemorySafeArray[T]{
+		array: make([]T, size),
+	}
 }
 
 func (a *inMemorySafeArray[T]) Append(item T) {
