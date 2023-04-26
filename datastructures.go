@@ -1,6 +1,13 @@
 package biological_driven_architecture
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+//----------------------------------------------------------------------------------------------------------------------
+//- Map
 
 type Map[T comparable, I any] interface {
 	// Get method returns the value and a boolean indicating if the key exists in the map
@@ -39,6 +46,9 @@ func DefaultMap[T comparable, I any]() Map[T, I] {
 		mutex: &sync.Mutex{},
 	}
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+//- Set
 
 type Set[T comparable] interface {
 	// Exist method checks if a key exists in the Set
@@ -95,56 +105,153 @@ func DefaultSet[T comparable]() Set[T] {
 	}
 }
 
-type Queue[T any] interface {
-	// Length methods return the size of the queue
+//----------------------------------------------------------------------------------------------------------------------
+//- Array
+
+type SafeArray[T any] interface {
+	Append(item T)
+	Get(i int) (T, bool)
+	Set(i int, item T) bool
+	Slice(start, end int, stepInterval ...int) SafeArray[T]
+
 	Length() int
-	// Pull method removes an item from the channel
-	Pull() (T, bool)
-	// Push method adds an item to the channel
-	Push(item T)
 }
 
-// The inMemoryQueue struct is a generic type that holds a channel for concurrent access
-type inMemoryQueue[T any] struct {
-	queue []T
+type inMemorySafeArray[T any] struct {
+	array []T
 	mutex *sync.Mutex
 }
 
-// Length methods return the size of the queue
-func (q *inMemoryQueue[T]) Length() int {
-	return len(q.queue)
+func DefaultSafeArray[T any]() SafeArray[T] {
+	return &inMemorySafeArray[T]{}
 }
 
-// Pull method removes an item from the channel
-func (q *inMemoryQueue[T]) Pull() (T, bool) {
-	q.mutex.Lock()
-	if len(q.queue) == 0 {
+func (a *inMemorySafeArray[T]) Append(item T) {
+	a.mutex.Lock()
+	a.array = append(a.array, item)
+	a.mutex.Unlock()
+}
+
+func (a *inMemorySafeArray[T]) Get(i int) (T, bool) {
+	a.mutex.Lock()
+	if i > len(a.array) {
 		var null T
-		q.mutex.Unlock()
+		a.mutex.Unlock()
 		return null, false
 	}
-	item := q.queue[0]
-	if len(q.queue) == 1 {
-		q.queue = make([]T, 0)
-		q.mutex.Unlock()
-		return item, true
-	}
-	q.queue = q.queue[1:]
-	q.mutex.Unlock()
+	item := a.array[i]
+	a.mutex.Unlock()
 	return item, true
 }
 
-// Push method adds an item to the channel
-func (q *inMemoryQueue[T]) Push(item T) {
-	q.mutex.Lock()
-	q.queue = append(q.queue, item)
-	q.mutex.Unlock()
+func (a *inMemorySafeArray[T]) Set(i int, item T) bool {
+	a.mutex.Lock()
+	if i > len(a.array) {
+		a.mutex.Unlock()
+		return false
+	}
+	a.array[i] = item
+	a.mutex.Unlock()
+	return true
 }
 
-// DefaultQueue function returns a new inMemoryQueue with an initialized channel
-func DefaultQueue[T any]() Queue[T] {
-	return &inMemoryQueue[T]{
-		queue: make([]T, 0),
+func (a *inMemorySafeArray[T]) Slice(start, end int, step ...int) SafeArray[T] {
+	var stepInterval int
+	if len(step) < 1 {
+		stepInterval = 1
+	} else {
+		stepInterval = step[0]
+	}
+	arr := make([]T, 0)
+	a.mutex.Lock()
+	for i := start; i != end; i += stepInterval {
+		if item, ok := a.Get(i); ok {
+			arr = append(arr, item)
+		} else {
+			break
+		}
+	}
+
+	newSafeArray := &inMemorySafeArray[T]{
+		array: arr,
 		mutex: &sync.Mutex{},
 	}
+	a.mutex.Unlock()
+	return newSafeArray
+}
+
+func (a *inMemorySafeArray[T]) Length() int {
+	a.mutex.Lock()
+	length := len(a.array)
+	a.mutex.Unlock()
+	return length
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//- Leaser
+
+// Leaser interface provides methods to get and reset lease time for an ID.
+type Leaser interface {
+	GetLease(id string) (time.Time, error)
+	ResetLease(id string, allegedLeaseTime time.Time) (time.Time, error)
+}
+
+// LeaserBuilder interface provides a method to build a Leaser instance.
+type LeaserBuilder interface {
+	Build() Leaser
+}
+
+// inMemoryLeaser is an implementation of the Leaser interface using an in-memory store.
+type inMemoryLeaser struct {
+	store         Map[string, time.Time]
+	LeaseDuration time.Duration
+	mutex         *sync.Mutex
+}
+
+// GetLease gets the lease time for an ID and sets it if not already set.
+func (l *inMemoryLeaser) GetLease(id string) (time.Time, error) {
+	l.mutex.Lock()
+	if currentLeaseTime, ok := l.store.Get(id); ok {
+		if time.Now().Before(currentLeaseTime) {
+			l.mutex.Unlock()
+			return time.Time{}, fmt.Errorf("cannot get lease for id: %s", id)
+		}
+	}
+	_, v := l.store.Set(id, time.Now().Local().Add(l.LeaseDuration))
+	l.mutex.Unlock()
+	return v, nil
+}
+
+// ResetLease resets the lease time for an ID if the current lease time matches the alleged lease time.
+func (l *inMemoryLeaser) ResetLease(id string, allegedLeaseTime time.Time) (time.Time, error) {
+	l.mutex.Lock()
+	if realLeaseTime, ok := l.store.Get(id); ok {
+		if realLeaseTime == allegedLeaseTime {
+			_, v := l.store.Set(id, time.Now().Local().Add(l.LeaseDuration))
+			l.mutex.Unlock()
+			return v, nil
+		}
+	}
+	l.mutex.Unlock()
+	return time.Time{}, fmt.Errorf("cannot reset lease for id: %s", id)
+}
+
+// inMemoryLeaserBuilder is a builder implementation for inMemoryLeaser.
+type inMemoryLeaserBuilder struct {
+	LeaseDuration time.Duration
+}
+
+// Build creates and returns a new instance of inMemoryLeaser.
+func (b *inMemoryLeaserBuilder) Build() Leaser {
+	leaser := DefaultMap[string, time.Time]()
+	return &inMemoryLeaser{
+		store:         leaser,
+		LeaseDuration: b.LeaseDuration,
+		mutex:         &sync.Mutex{},
+	}
+}
+
+// NewInMemoryLeaserBuilder returns a new instance of inMemoryLeaserBuilder.
+func NewInMemoryLeaserBuilder() LeaserBuilder {
+	return &inMemoryLeaserBuilder{}
 }
