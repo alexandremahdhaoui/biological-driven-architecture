@@ -308,13 +308,15 @@ func (q *inMemoryQueue[T]) Run() Error {
 	wg.Add(1)
 
 	go func(wg *sync.WaitGroup) {
-		select {
-		case <-q.Ctx.Done():
-			LogInfof(q, LogOperationRun, LogStatusSuccess, "received stop signal for queue: %s", q.GetName())
-			q.Stop()
-			wg.Done()
-		case item := <-q.receiver:
-			q.sender <- item
+		for {
+			select {
+			case <-q.Ctx.Done():
+				LogInfof(q, LogOperationRun, LogStatusSuccess, "received stop signal for queue: %s", q.GetName())
+				q.Stop()
+				wg.Done()
+			case item := <-q.receiver:
+				q.sender <- item
+			}
 		}
 	}(wg)
 
