@@ -1,5 +1,7 @@
 package biological_driven_architecture
 
+import "context"
+
 // Worker is a wrapper struct around a concrete implementation of a Runtime.
 // A Worker holds a reference to a Strategy. The Strategy is injected in the worker by the WorkerFactory
 type Worker struct {
@@ -7,6 +9,8 @@ type Worker struct {
 	Strategy Strategy
 	Receptor Runtime
 	Logger   *Logger
+
+	Context context.Context
 }
 
 func (w *Worker) Init() Error {

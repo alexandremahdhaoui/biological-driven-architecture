@@ -1,5 +1,7 @@
 package biological_driven_architecture
 
+import "context"
+
 type Runtime interface {
 	// Operations
 
@@ -16,5 +18,5 @@ type Runtime interface {
 }
 
 type Builder[T any] interface {
-	Spawn(name string) (T, Error)
+	Spawn(name string, ctx context.Context) (T, Error)
 }

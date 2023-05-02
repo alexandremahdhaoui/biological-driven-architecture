@@ -1,6 +1,7 @@
 package biological_driven_architecture
 
 import (
+	"context"
 	"fmt"
 	"sync"
 )
@@ -12,6 +13,9 @@ type WorkerPool struct {
 	StrategyFunc  WorkerPoolStrategyFunc
 	Replicas      int
 	Logger        *Logger
+
+	Context context.Context
+	stopped bool
 }
 
 func (p *WorkerPool) Init() Error {
@@ -101,7 +105,7 @@ func (p *WorkerPool) respawnWorker(i int, wg *sync.WaitGroup, errs SafeArray[Err
 func (p *WorkerPool) spawnWorker(i int, wg *sync.WaitGroup, errs SafeArray[Error]) {
 	LogDebugf(p, LogOperationInit, LogStatusProgress, "spawn worker-%d", i)
 
-	w, err := p.WorkerFactory.Spawn(fmt.Sprintf("%s-%d", p.Name, i))
+	w, err := p.WorkerFactory.Spawn(fmt.Sprintf("%s-%d", p.Name, i), p.Context)
 	if err != nil {
 		LogErrorf(p, LogOperationInit, LogStatusProgress, "error while spawning worker-%d; %v", i, err)
 		p.HandleError(err)
@@ -133,9 +137,10 @@ func (p *WorkerPool) GetLogger() *Logger {
 type WorkerPoolStrategyFunc func(p *WorkerPool, i int, wg *sync.WaitGroup, errors SafeArray[Error])
 
 func WorkerPoolStrategyRunLoop(p *WorkerPool, i int, wg *sync.WaitGroup, errs SafeArray[Error]) {
+
 	LogDebugf(p, LogOperationRun, LogStatusProgress, "starting run loop for worker-%d", i)
 
-	for {
+	for p.stopped != false {
 		innerWg := &sync.WaitGroup{}
 		innerWg.Add(1)
 
@@ -189,15 +194,16 @@ type WorkerFactory struct {
 	WorkerStrategy  Strategy
 }
 
-func (wf *WorkerFactory) Spawn(name string) (*Worker, Error) {
-	receptor, err := wf.ReceptorFactory.Spawn(fmt.Sprintf("%s-receptor", name))
+func (f *WorkerFactory) Spawn(name string, ctx context.Context) (*Worker, Error) {
+	receptor, err := f.ReceptorFactory.Spawn(fmt.Sprintf("%s-receptor", name), ctx)
 	if err != nil {
 		return nil, err
 	}
 	return &Worker{
 		Name:     name,
-		Strategy: wf.WorkerStrategy,
+		Strategy: f.WorkerStrategy,
 		Receptor: receptor,
 		Logger:   DefaultLogger(),
+		Context:  ctx,
 	}, nil
 }

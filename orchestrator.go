@@ -1,6 +1,7 @@
 package biological_driven_architecture
 
 import (
+	"context"
 	"sync"
 )
 
@@ -9,6 +10,8 @@ type Orchestrator struct {
 	WorkerPools SafeArray[*WorkerPool]
 	Strategy    Strategy
 	Logger      *Logger
+
+	Context context.Context
 }
 
 func (o *Orchestrator) Init() Error {
@@ -48,6 +51,7 @@ func (o *Orchestrator) Run() Error {
 		}(wg)
 	}
 	wg.Wait()
+
 	return HandleErrors(o, LogOperationRun, errs)
 }
 

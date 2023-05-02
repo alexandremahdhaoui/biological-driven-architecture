@@ -275,30 +275,25 @@ func NewInMemoryLeaserBuilder() LeaserBuilder {
 // Queue is intended for multiple uses cases, such as abstracting a clustered Queue over the network.
 type Queue[T any] interface {
 	Runtime
-	Receiver() chan T
+	Receiver() <-chan T
 	// Sender methods returns a reference to a chan T
-	Sender() chan T
+	Sender() chan<- T
 }
 
 // The inMemoryQueue struct is a generic type that holds a channel for concurrent access
 type inMemoryQueue[T any] struct {
 	Name string
-	Ctx  context.Context
-	//safeArray SafeArray[T]
+	ctx  context.Context
 
 	capacity int
-	receiver chan T
-	sender   chan T
-
-	logger *Logger
-	//mutex  *sync.Mutex
+	channel  chan T
+	logger   *Logger
 }
 
 func (q *inMemoryQueue[T]) Init() Error {
 	//q.safeArray = DefaultSafeArray[T]()
 	//q.mutex = &sync.Mutex{}
-	q.receiver = make(chan T, q.capacity)
-	q.sender = make(chan T, q.capacity)
+	q.channel = make(chan T, q.capacity)
 	return nil
 }
 
@@ -308,15 +303,11 @@ func (q *inMemoryQueue[T]) Run() Error {
 	wg.Add(1)
 
 	go func(wg *sync.WaitGroup) {
-		for {
-			select {
-			case <-q.Ctx.Done():
-				LogInfof(q, LogOperationRun, LogStatusSuccess, "received stop signal for queue: %s", q.GetName())
-				q.Stop()
-				wg.Done()
-			case item := <-q.receiver:
-				q.sender <- item
-			}
+		select {
+		case <-q.ctx.Done():
+			LogInfof(q, LogOperationRun, LogStatusSuccess, "received stop signal for queue: %s", q.GetName())
+			q.Stop()
+			wg.Done()
 		}
 	}(wg)
 
@@ -326,9 +317,7 @@ func (q *inMemoryQueue[T]) Run() Error {
 
 func (q *inMemoryQueue[T]) Stop() Error {
 	LogInfof(q, LogOperationStop, LogStatusStart, "stopping queue: %s", q.GetName())
-	q.Ctx.Done()
-	close(q.receiver)
-	close(q.sender)
+	close(q.channel)
 	LogInfof(q, LogOperationStop, LogStatusSuccess, "successfully stopped queue: %s", q.GetName())
 	return nil
 }
@@ -342,25 +331,31 @@ func (q *inMemoryQueue[T]) GetName() string {
 }
 
 func (q *inMemoryQueue[T]) GetType() string {
-	return "safeArray-in-memory"
+	return "queue-inmemory"
 }
 
 func (q *inMemoryQueue[T]) GetLogger() *Logger {
 	return q.logger
 }
 
-func (q *inMemoryQueue[T]) Receiver() chan T {
-	return q.receiver
+func (q *inMemoryQueue[T]) Receiver() <-chan T {
+	return q.channel
 }
 
-func (q *inMemoryQueue[T]) Sender() chan T {
-	return q.sender
+func (q *inMemoryQueue[T]) Sender() chan<- T {
+	return q.channel
 }
 
 // DefaultQueue function returns a new inMemoryQueue with an initialized channel
 func DefaultQueue[T any](name string, ctx context.Context) Queue[T] {
+	return DefaultQueueWithCapacity[T](name, ctx, 1)
+}
+
+// DefaultQueueWithCapacity function returns a new inMemoryQueue with an initialized channel
+func DefaultQueueWithCapacity[T any](name string, ctx context.Context, capacity int) Queue[T] {
 	return &inMemoryQueue[T]{
-		Name: name,
-		Ctx:  ctx,
+		Name:     name,
+		ctx:      ctx,
+		capacity: capacity,
 	}
 }
