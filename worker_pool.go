@@ -15,7 +15,6 @@ type WorkerPool struct {
 	Logger        *Logger
 
 	Context context.Context
-	stopped bool
 }
 
 func (p *WorkerPool) Init() Error {
@@ -140,22 +139,26 @@ func WorkerPoolStrategyRunLoop(p *WorkerPool, i int, wg *sync.WaitGroup, errs Sa
 
 	LogDebugf(p, LogOperationRun, LogStatusProgress, "starting run loop for worker-%d", i)
 
-	for p.stopped != false {
-		innerWg := &sync.WaitGroup{}
-		innerWg.Add(1)
-
-		w, _ := p.Workers.Get(i)
-		if w == nil {
-			LogDebugf(p, LogOperationRun, LogStatusProgress, "found nil worker-%d; spawning new worker", i)
-			p.respawnWorker(i, innerWg, errs)
-			innerWg.Wait()
+	for {
+		select {
+		case <-p.Context.Done():
+			wg.Done() //
+			return
+		default:
+			innerWg := &sync.WaitGroup{}
 			innerWg.Add(1)
-		}
-		WorkerPoolStrategyRunOnce(p, i, innerWg, errs)
-		innerWg.Wait()
-	}
 
-	wg.Done() // Unreachable atm; Will be useful when implementing a signal to interrupt the run process.
+			w, _ := p.Workers.Get(i)
+			if w == nil {
+				LogDebugf(p, LogOperationRun, LogStatusProgress, "found nil worker-%d; spawning new worker", i)
+				p.respawnWorker(i, innerWg, errs)
+				innerWg.Wait()
+				innerWg.Add(1)
+			}
+			WorkerPoolStrategyRunOnce(p, i, innerWg, errs)
+			innerWg.Wait()
+		}
+	}
 }
 
 func WorkerPoolStrategyRunOnce(p *WorkerPool, i int, wg *sync.WaitGroup, errs SafeArray[Error]) {
