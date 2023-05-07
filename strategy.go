@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-package biological_driven_architecture
+package bda
 
 type Strategy interface {
 	Init(Runtime) Error
